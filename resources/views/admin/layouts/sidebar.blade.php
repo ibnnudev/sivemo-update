@@ -40,7 +40,7 @@
             <!-- Master Larvae -->
             @if (auth()->user()->role == 'admin')
                 <x-sidebar-item title="Data Kasus" route="{{ route('admin.tcases.index') }}"
-                    active="{{ request()->routeIs('admin.cases.*') }}" icon="fas fa-file-circle-check" />
+                    active="{{ request()->routeIs('admin.tcases.*') }}" icon="fas fa-file-circle-check" />
 
                 <!-- Analisis Cluster -->
                 <x-sidebar-dropdown title="Analisis Cluster" icon="fas fa-file-circle-check" toggle="cluster"
