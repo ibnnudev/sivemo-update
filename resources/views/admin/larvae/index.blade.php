@@ -171,6 +171,7 @@
                 });
 
                 let larvae = @json($larvae);
+                
 
                 // get center map
                 let centerCoordinate = [];

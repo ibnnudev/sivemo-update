@@ -351,7 +351,7 @@
             </thead>
             <tbody>
                 ` +
-                        larvae[i].detail_larvaes.map((data, index) => {
+                        larvae[i].detail_larvaes[0].map((data, index) => {
                             return `<tr>
                         <td>${index + 1}</td>
                         <td>${data.tpa_type.name}</td>
