@@ -31,32 +31,36 @@ class DashboardController extends Controller
         LarvaeInterface $larvae,
         RegencyInterface $regency
     ) {
-        $this->sample = $sample;
-        $this->larva = $larva;
-        $this->abj = $abj;
-        $this->larvae = $larvae;
+        $this->sample  = $sample;
+        $this->larva   = $larva;
+        $this->abj     = $abj;
+        $this->larvae  = $larvae;
         $this->regency = $regency;
     }
 
-    public function __invoke(Request $request)
+    public function index(Request $request)
     {
-        // return $this->sample->getSampleAndAbjGroupByDistrict($request->regency_id ?? 3501);
         return view('admin.dashboard.index', [
             'samplePerYear' => $this->sample->getSamplePerYear(date('Y')),
-            'usersCount' => User::all()->count(),
-            'totalSample' => $this->sample->getTotalSample(),
+            'usersCount'    => User::all()->count(),
+            'totalSample'   => $this->sample->getTotalSample(),
             'totalMosquito' => $this->sample->getTotalMosquito(),
-            'totalLarva' => $this->larva->getTotalLarva(),
-            'abj' => $this->abj->getAllGroupByDistrict(),
-            'larvae' => $this->larvae->getAll(),
-            'sample' => $this->sample->getAll(),
-            'sampleAndAbj' => $this->sample->getSampleAndAbjGroupByDistrict($request->regency_id ?? 3578),
-            'regencies' => $this->regency->getAll(),
+            'totalLarva'    => $this->larva->getTotalLarva(),
+            'abj'           => $this->abj->getAllGroupByDistrict(),
+            'larvae'        => $this->larvae->getAll(),
+            'sample'        => $this->sample->getAll(),
+            'sampleAndAbj'  => $this->sample->getSampleAndAbjGroupByDistrict($request->regency_id ?? 3578),
+            'regencies'     => $this->regency->getAll(),
         ]);
     }
 
     public function getSampleAndAbjByDistrict(Request $request)
     {
         return response()->json($this->sample->getSampleAndAbjGroupByDistrict($request->regency_id));
+    }
+
+    public function filterChartSamplePerYear(Request $request)
+    {
+        return response()->json($this->sample->getSamplePerYear($request->year));
     }
 }

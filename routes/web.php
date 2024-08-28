@@ -65,7 +65,8 @@ Route::get('user/reset-password-form', [AuthController::class, 'resetPasswordFor
 Route::post('user/check-email', [AuthController::class, 'checkEmail'])->name('admin.user.check-email');
 
 Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
-    Route::get('/', DashboardController::class)->name('admin.dashboard');
+    Route::get('/filter-chart-sample-per-year', [DashboardController::class, 'filterChartSamplePerYear'])->name('admin.dashboard.filter-chart-sample-per-year');
+    Route::get('/', [DashboardController::class, 'index'])->name('admin.dashboard');
 
     Route::post('get-sample-and-abj-by-district', [DashboardController::class, 'getSampleAndAbjByDistrict'])->name('admin.dashboard.get-sample-and-abj-by-district');
 

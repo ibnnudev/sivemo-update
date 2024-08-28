@@ -47,6 +47,10 @@
         ::-webkit-scrollbar {
             width: 0px;
         }
+
+        #samplePerYear {
+            height: 300px !important;
+        }
     </style>
 
     <!-- Leaflet -->

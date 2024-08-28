@@ -476,3 +476,24 @@ select option {
 .dataTable * {
     @apply text-xs;
 }
+
+.legend-color {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    margin-right: 5px;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+}
+
+.legend-green {
+    background-color: #1cc88a;
+}
+
+.legend-yellow {
+    background-color: #ffff00;
+}
+
+.legend-red {
+    background-color: #e74a3b;
+}

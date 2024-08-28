@@ -20,81 +20,71 @@
         <div id="map" style="height: 100%; position: relative; z-index: 1;"></div>
     </div>
 
-    <style>
-        .legend-color {
-            width: 20px;
-            height: 20px;
-            display: inline-block;
-            margin-right: 5px;
-            border: 1px solid #ccc;
-            border-radius: 2px;
-        }
-
-        .legend-green {
-            background-color: #1cc88a;
-        }
-
-        .legend-yellow {
-            background-color: #ffff00;
-        }
-
-        .legend-red {
-            background-color: #e74a3b;
-        }
-    </style>
-    <div class="xl:grid grid-cols-2 gap-x-4">
-        @if ($samplePerYear->count() > 0)
-            <x-card-container style="height: 301px">
-                <p class="text-sm font-semibold">
-                    Statistik Sampel
-                </p>
-                <canvas id="samplePerYear"></canvas>
-            </x-card-container>
-        @endif
-        <div class="xl:grid grid-cols-2 gap-4 md:flex md:flex-wrap">
-            <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow flex items-center mb-4 md:mb-0">
-                <i class="fas fa-users fa-2x text-primary mr-4 "></i>
-                <div>
-                    <a href="#">
-                        <h5 class="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
-                            {{ number_format($usersCount, 0, ',', '.') }}
-                        </h5>
-                    </a>
-                    <p class="font-normal text-sm text-gray-500">Pengguna</p>
-                </div>
+    <x-card-container>
+        <div class="flex justify-between items-center">
+            <div>
+                <p class="text-sm font-semibold">Statistik Sampel</p>
+                <small class="text-gray-400">Jumlah sampel nyamuk yang diperiksa</small>
             </div>
-            <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow flex items-center mb-4 md:mb-0">
-                <i class="fas fa-chart-simple fa-2x text-success mr-4"></i>
-                <div>
-                    <a href="#">
-                        <h5 class="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
-                            {{ number_format($totalSample, 0, ',', '.') }}
-                        </h5>
-                    </a>
-                    <p class="font-normal text-sm text-gray-500">Sampel Nyamuk</p>
-                </div>
+            <x-select id="filterSamplePerYearChart" name="filterSamplePerYearChart">
+                @php
+                    $years = [];
+                    for ($i = 2021; $i <= date('Y'); $i++) {
+                        $years[] = $i;
+                    }
+                @endphp
+
+                @foreach ($years as $year)
+                    <option value="{{ $year }}">{{ $year }}</option>
+                @endforeach
+            </x-select>
+        </div>
+        <canvas id="samplePerYear"></canvas>
+    </x-card-container>
+    <br />
+    <div class="grid grid-cols-4 gap-4">
+        <div class="p-6 bg-white border border-gray-200 rounded-lg shadow flex items-center mb-4 md:mb-0">
+            <i class="fas fa-users fa-2x text-primary mr-4 "></i>
+            <div>
+                <a href="#">
+                    <h5 class="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
+                        {{ number_format($usersCount, 0, ',', '.') }}
+                    </h5>
+                </a>
+                <p class="font-normal text-sm text-gray-500">Pengguna</p>
             </div>
-            <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow flex items-center mb-4 md:mb-0">
-                <i class="fas fa-mosquito fa-2x text-error mr-4"></i>
-                <div>
-                    <a href="#">
-                        <h5 class="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
-                            {{ number_format($totalMosquito, 0, ',', '.') }}
-                        </h5>
-                    </a>
-                    <p class="font-normal text-sm text-gray-500">Total Nyamuk</p>
-                </div>
+        </div>
+        <div class="p-6 bg-white border border-gray-200 rounded-lg shadow flex items-center mb-4 md:mb-0">
+            <i class="fas fa-chart-simple fa-2x text-success mr-4"></i>
+            <div>
+                <a href="#">
+                    <h5 class="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
+                        {{ number_format($totalSample, 0, ',', '.') }}
+                    </h5>
+                </a>
+                <p class="font-normal text-sm text-gray-500">Sampel Nyamuk</p>
             </div>
-            <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow flex items-center mb-4 md:mb-0">
-                <i class="fas fa-worm fa-2x text-warning mr-4"></i>
-                <div>
-                    <a href="#">
-                        <h5 class="mb-1 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
-                            {{ number_format($totalLarva, 0, ',', '.') }}
-                        </h5>
-                    </a>
-                    <p class="font-normal text-sm text-gray-500">Total Larva</p>
-                </div>
+        </div>
+        <div class="p-6 bg-white border border-gray-200 rounded-lg shadow flex items-center mb-4 md:mb-0">
+            <i class="fas fa-mosquito fa-2x text-error mr-4"></i>
+            <div>
+                <a href="#">
+                    <h5 class="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
+                        {{ number_format($totalMosquito, 0, ',', '.') }}
+                    </h5>
+                </a>
+                <p class="font-normal text-sm text-gray-500">Total Nyamuk</p>
+            </div>
+        </div>
+        <div class="p-6 bg-white border border-gray-200 rounded-lg shadow flex items-center mb-4 md:mb-0">
+            <i class="fas fa-worm fa-2x text-warning mr-4"></i>
+            <div>
+                <a href="#">
+                    <h5 class="mb-1 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
+                        {{ number_format($totalLarva, 0, ',', '.') }}
+                    </h5>
+                </a>
+                <p class="font-normal text-sm text-gray-500">Total Larva</p>
             </div>
         </div>
     </div>
@@ -402,104 +392,189 @@
 
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script>
-            $(function() {
+            $(document).ready(function() {
                 let samplePerYear = @json($samplePerYear);
-                @if (count($samplePerYear) > 0)
-                    // Mengambil bulan dan jumlah dari setiap entri data
-                    var labels = samplePerYear.map(entry => entry.month);
-                    var counts = samplePerYear.map(entry => entry.count);
+                let myChart;
 
-                    // Mengambil jenis nyamuk dari setiap entri samplePerYear
-                    var mosquitoTypes = Object.keys(samplePerYear[0].type);
-
-                    // Mengambil jumlah nyamuk dari setiap entri samplePerYear
-                    var mosquitoAmounts = samplePerYear.map(entry => Object.values(entry.type));
-
-                    // Membuat chart dengan Chart.js
-                    var ctx = document.getElementById('samplePerYear').getContext('2d');
-                    // width 100%
+                // Ensure the canvas element exists before attempting to access it
+                let ctx = document.getElementById('samplePerYear');
+                if (ctx) {
+                    ctx = ctx.getContext('2d');
                     ctx.canvas.width = '100%';
 
                     let purplePallete = [
                         '#4e73df',
                         '#6f42c1',
                         '#9c27b0',
-                    ]
+                    ];
 
-                    var datasets = mosquitoTypes.map((type, index) => {
-                        return {
-                            label: type,
-                            data: mosquitoAmounts.map(amounts => amounts[index]),
-                            backgroundColor: purplePallete[index],
-                            borderColor: purplePallete[index],
-                            borderWidth: 1,
-                            fill: false,
-                            pointRadius: 3,
-                            pointHoverRadius: 5,
-                            pointHitRadius: 10,
-                            pointBackgroundColor: purplePallete[index],
-                            pointBorderColor: purplePallete[index],
-                            pointHoverBackgroundColor: purplePallete[index],
-                            pointHoverBorderColor: purplePallete[index],
-                        };
-                    });
+                    function updateChart(data) {
+                        var labels = data.map(entry => entry.month);
+                        var mosquitoTypes = Object.keys(data[0].type);
+                        var mosquitoAmounts = data.map(entry => Object.values(entry.type));
 
-                    var myChart = new Chart(ctx, {
-                        type: 'line',
-                        data: {
-                            labels: labels,
-                            datasets: datasets
-                        },
-                        options: {
-                            responsive: true,
-                            interaction: {
-                                mode: 'index',
-                                intersect: false
+                        var datasets = mosquitoTypes.map((type, index) => {
+                            return {
+                                label: type,
+                                data: mosquitoAmounts.map(amounts => amounts[index]),
+                                backgroundColor: purplePallete[index],
+                                borderColor: purplePallete[index],
+                                borderWidth: 1,
+                                fill: false,
+                                pointRadius: 3,
+                                pointHoverRadius: 5,
+                                pointHitRadius: 10,
+                                pointBackgroundColor: purplePallete[index],
+                                pointBorderColor: purplePallete[index],
+                                pointHoverBackgroundColor: purplePallete[index],
+                                pointHoverBorderColor: purplePallete[index],
+                            };
+                        });
+
+                        if (myChart) {
+                            myChart.destroy();
+                        }
+
+                        myChart = new Chart(ctx, {
+                            type: 'line',
+                            data: {
+                                labels: labels,
+                                datasets: datasets
                             },
-                            scales: {
-                                y: {
-                                    // stack the bar
-                                    stacked: true,
-                                    grid: {
-                                        display: false,
-                                    },
-                                    ticks: {
-                                        beginAtZero: true,
-                                        precision: 0,
-                                        stepSize: 1,
-                                    },
-                                },
-                                x: {
-                                    // stack the bar
-                                    stacked: true,
-                                    grid: {
-                                        display: false,
-                                    },
-                                    ticks: {
-                                        beginAtZero: true,
-                                        precision: 0,
-                                        stepSize: 1,
-                                    },
-                                },
-                            },
-                            plugins: {
-                                tooltip: {
+                            options: {
+                                responsive: true,
+                                interaction: {
                                     mode: 'index',
                                     intersect: false
                                 },
-                                legend: {
-                                    labels: {
-                                        usePointStyle: true,
-                                        boxWidth: 5,
-                                        boxHeight: 5,
+                                scales: {
+                                    y: {
+                                        stacked: true,
+                                        grid: {
+                                            display: false,
+                                        },
+                                        ticks: {
+                                            beginAtZero: true,
+                                            precision: 0,
+                                            stepSize: 1,
+                                        },
+                                    },
+                                    x: {
+                                        stacked: true,
+                                        grid: {
+                                            display: false,
+                                        },
+                                        ticks: {
+                                            beginAtZero: true,
+                                            precision: 0,
+                                            stepSize: 1,
+                                        },
                                     },
                                 },
-                            },
+                                plugins: {
+                                    tooltip: {
+                                        mode: 'index',
+                                        intersect: false
+                                    },
+                                    legend: {
+                                        labels: {
+                                            usePointStyle: true,
+                                            boxWidth: 5,
+                                            boxHeight: 5,
+                                        },
+                                    },
+                                },
+                            }
+                        });
+                    }
+
+                    function emptyChart() {
+                        if (myChart) {
+                            myChart.destroy();
                         }
+
+                        myChart = new Chart(ctx, {
+                            type: 'line',
+                            data: {
+                                labels: [],
+                                datasets: []
+                            },
+                            options: {
+                                responsive: true,
+                                interaction: {
+                                    mode: 'index',
+                                    intersect: false
+                                },
+                                scales: {
+                                    y: {
+                                        stacked: true,
+                                        grid: {
+                                            display: false,
+                                        },
+                                        ticks: {
+                                            beginAtZero: true,
+                                            precision: 0,
+                                            stepSize: 1,
+                                        },
+                                    },
+                                    x: {
+                                        stacked: true,
+                                        grid: {
+                                            display: false,
+                                        },
+                                        ticks: {
+                                            beginAtZero: true,
+                                            precision: 0,
+                                            stepSize: 1,
+                                        },
+                                    },
+                                },
+                                plugins: {
+                                    tooltip: {
+                                        mode: 'index',
+                                        intersect: false
+                                    },
+                                    legend: {
+                                        labels: {
+                                            usePointStyle: true,
+                                            boxWidth: 5,
+                                            boxHeight: 5,
+                                        },
+                                    },
+                                },
+                            }
+                        });
+                    }
+
+                    $('#filterSamplePerYearChart').change(function() {
+                        $.ajax({
+                            url: '{{ route('admin.dashboard.filter-chart-sample-per-year') }}',
+                            type: 'GET',
+                            data: {
+                                year: $(this).val()
+                            },
+                            success: function(response) {
+                                if (response.length > 0) {
+                                    console.log(response);
+                                    samplePerYear = response;
+                                    updateChart(samplePerYear);
+                                } else {
+                                    emptyChart();
+                                    // 
+                                }
+                            }
+                        });
                     });
-                @endif
+
+                    @if (count($samplePerYear) > 0)
+                        updateChart(samplePerYear);
+                    @endif
+                } else {
+                    console.error('Canvas element with ID "samplePerYear" not found.');
+                }
             });
         </script>
+
 
         <script>
             $(function() {
