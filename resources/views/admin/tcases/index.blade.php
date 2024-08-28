@@ -153,7 +153,7 @@
                     icon: 'success',
                     title: 'Berhasil',
                     text: '{{ Session::get('
-                                                    success ') }}'
+                                                                                            success ') }}'
                 })
             @endif
 
@@ -162,7 +162,7 @@
                     icon: 'error',
                     title: 'Gagal',
                     text: '{{ Session::get('
-                                                    error ') }}'
+                                                                                            error ') }}'
                 })
             @endif
             const map = L.map('map').setView([-7.2756196, 112.7106256], 11.5);
@@ -251,7 +251,7 @@
                 let tcases = @json($tcases);
 
                 // Kemudian, tambahkan layer-data yang baru
-                fetch("{{ asset('assets/geojson/surabaya.geojson') }}")
+                fetch("{{ asset('assets/geojson/surabaya.json') }}")
                     .then((response) => response.json())
                     .then((data) => {
                         const tcases2020 = filterTcasesByYear(tcases, selectedYear);

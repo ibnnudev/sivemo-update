@@ -12,7 +12,7 @@ class MapsSeeder extends Seeder
      */
     public function run(): void
     {
-        $json = file_get_contents(public_path('assets/geojson/surabaya.geojson'));
+        $json = file_get_contents(public_path('assets/geojson/surabaya.json'));
         $json = json_decode($json, true);
         foreach ($json as $value) {
             Map::create([

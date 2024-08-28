@@ -156,7 +156,7 @@
                 // Menggunakan fetch untuk mengambil data GeoJSON dari URL
                 let abj = Object.values(@json($abj));
                 console.log(abj);
-                fetch("{{ asset('assets/geojson/surabaya.geojson') }}")
+                fetch("{{ asset('assets/geojson/surabaya.json') }}")
                     .then((response) => response.json())
                     .then((data) => {
                         const geojson = {
