@@ -7,34 +7,39 @@
             <div class="sm:grid grid-cols-2 gap-x-4">
                 <div>
                     <p class="text-sm font-semibold mb-6">Detail Sampling</p>
-                    <x-select id="regency_id" label="Kabupaten/Kota" name="regency_id" isFit="true" required>
-                        @foreach ($regencies as $regency)
-                            <option value="{{ $regency->id }}"
-                                {{ $ksh->regency->id == $regency->id ? 'selected' : '' }}>{{ $regency->name }}</option>
-                        @endforeach
-                    </x-select>
-                    <x-select id="district_id" label="Kecamatan" name="district_id" isFit="true" required>
-                        <option value="{{ $ksh->district->id }}" selected>{{ $ksh->district->name }}</option>
-                    </x-select>
-                    <x-select id="village_id" label="Desa" name="village_id" isFit="true" required>
-                        <option value="{{ $ksh->village->id }}" selected>{{ $ksh->village->name }}</option>
-                    </x-select>
-                    <p class="text-sm" id="address">
-                        Alamat:
-                        {{ ucwords(strtolower($ksh->village->name . ', ' . $ksh->district->name . ', ' . $ksh->regency->name)) }}
-                    </p>
+                    <div class="space-y-6">
+                        <x-select id="regency_id" label="Kabupaten/Kota" name="regency_id" isFit="true" required>
+                            @foreach ($regencies as $regency)
+                                <option value="{{ $regency->id }}"
+                                    {{ $ksh->regency->id == $regency->id ? 'selected' : '' }}>{{ $regency->name }}
+                                </option>
+                            @endforeach
+                        </x-select>
+                        <x-select id="district_id" label="Kecamatan" name="district_id" isFit="true" required>
+                            <option value="{{ $ksh->district->id }}" selected>{{ $ksh->district->name }}</option>
+                        </x-select>
+                        <x-select id="village_id" label="Desa" name="village_id" isFit="true" required>
+                            <option value="{{ $ksh->village->id }}" selected>{{ $ksh->village->name }}</option>
+                        </x-select>
+                        <p class="text-xs" id="address">
+                            Alamat:
+                            {{ ucwords(strtolower($ksh->village->name . ', ' . $ksh->district->name . ', ' . $ksh->regency->name)) }}
+                        </p>
+                    </div>
                 </div>
                 <div>
                     <p class="text-sm font-semibold mb-6">Detail Koordinat</p>
-                    <div class="sm:grid grid-cols-2 gap-x-4">
-                        <x-input id="latitude" label="Latitude" name="latitude" type="text" required />
-                        <x-input id="longitude" label="Longitude" name="longitude" type="text" required />
-                    </div>
-                    <x-link-button color="gray" id="btnReloadCoordinate" class="w-full mb-3 justify-center">
-                        <i class="fas fa-sync-alt mr-2"></i>
-                        <span>Reload Koordinat</span>
-                    </x-link-button>
-                    <div id="map" class="h-72 mt-4" style="border-radius: 10px; border: none; z-index: 0;">
+                    <div class="space-y-6">
+                        <div class="sm:grid grid-cols-2 gap-x-4">
+                            <x-input id="latitude" label="Latitude" name="latitude" type="text" required />
+                            <x-input id="longitude" label="Longitude" name="longitude" type="text" required />
+                        </div>
+                        <x-link-button color="gray" id="btnReloadCoordinate" class="w-full mb-3 justify-center">
+                            <i class="fas fa-sync-alt mr-2"></i>
+                            <span>Reload Koordinat</span>
+                        </x-link-button>
+                        <div id="map" class="h-72 mt-4" style="border-radius: 10px; border: none; z-index: 0;">
+                        </div>
                     </div>
                 </div>
             </div>

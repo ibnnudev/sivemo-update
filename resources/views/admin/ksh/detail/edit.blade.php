@@ -7,42 +7,44 @@
             <div class="sm:grid sm:grid-cols-2 sm:gap-4">
                 <div>
                     <p class="text-sm font-semibold mb-6">Detail Lokasi</p>
-                    <x-input id="house_name" name="house_name" label="Nama Rumah" required class="max-w-xs"
-                        :value="$data->house_name" />
-                    <x-input id="house_owner" name="house_owner" label="Nama Pemilik Rumah" required class="max-w-xs"
-                        :value="$data->house_owner" />
-                    <x-select id="tpa_type_id" label="Jenis TPA" name="tpa_type_id">
-                        @foreach ($tpaTypes as $tpaType)
-                            <option value="{{ $tpaType->id }}" @if ($data->tpa_type_id == $tpaType->id) selected @endif>
-                                {{ $tpaType->name }}
-                            </option>
-                        @endforeach
-                    </x-select>
-                    <x-input id="tpa_description" name="tpa_description" label="Deskripsi Tpa" required class="max-w-xs"
-                        :value="$data->tpa_description" />
-                    <div>
-                        <p class="mb-2 text-sm">Status Larva <span class="text-red-500">*</span></p>
-                        <div class="flex items-center">
-                            <div class="flex items-center mr-2">
-                                <input id="positive-list-radio-license" type="radio" value="1"
-                                    @if ($data->larva_status == 1) checked @endif name="larva_status"
-                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500" />
-                                <label for="positive-list-radio-license"
-                                    class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Ada</label>
-                            </div>
+                    <div class="space-y-6">
+                        <x-input id="house_name" name="house_name" label="Nama Rumah" required class="max-w-xs"
+                            :value="$data->house_name" />
+                        <x-input id="house_owner" name="house_owner" label="Nama Pemilik Rumah" required
+                            class="max-w-xs" :value="$data->house_owner" />
+                        <x-select id="tpa_type_id" label="Jenis TPA" name="tpa_type_id">
+                            @foreach ($tpaTypes as $tpaType)
+                                <option value="{{ $tpaType->id }}" @if ($data->tpa_type_id == $tpaType->id) selected @endif>
+                                    {{ $tpaType->name }}
+                                </option>
+                            @endforeach
+                        </x-select>
+                        <x-input id="tpa_description" name="tpa_description" label="Deskripsi Tpa" required
+                            class="max-w-xs" :value="$data->tpa_description" />
+                        <div>
+                            <p class="mb-2 text-xs">Status Larva <span class="text-red-500">*</span></p>
                             <div class="flex items-center">
-                                <input id="negative-list-radio-license" type="radio" value="0"
-                                    @if ($data->larva_status == 0) checked @endif name="larva_status"
-                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500" />
-                                <label for="negative-list-radio-license"
-                                    class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                                    Tidak Ada
-                                </label>
+                                <div class="flex items-center mr-2">
+                                    <input id="positive-list-radio-license" type="radio" value="1"
+                                        @if ($data->larva_status == 1) checked @endif name="larva_status"
+                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500" />
+                                    <label for="positive-list-radio-license"
+                                        class="w-full py-3 ml-2 text-xs font-medium text-gray-900 dark:text-gray-300">Ada</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input id="negative-list-radio-license" type="radio" value="0"
+                                        @if ($data->larva_status == 0) checked @endif name="larva_status"
+                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500" />
+                                    <label for="negative-list-radio-license"
+                                        class="w-full py-3 ml-2 text-xs font-medium text-gray-900 dark:text-gray-300">
+                                        Tidak Ada
+                                    </label>
+                                </div>
                             </div>
+                            @error('larva_status')
+                                <p class="text-xs text-red-500">{{ $message }}</p>
+                            @enderror
                         </div>
-                        @error('larva_status')
-                            <p class="text-xs text-red-500">{{ $message }}</p>
-                        @enderror
                     </div>
                 </div>
                 <div>
@@ -249,7 +251,7 @@
                         icon: 'success',
                         title: 'Berhasil',
                         text: '{{ Session::get('
-                                                                success ') }}',
+                                                                                                                                        success ') }}',
                     });
                 @endif
 
@@ -258,7 +260,7 @@
                         icon: 'error',
                         title: 'Gagal',
                         text: '{{ Session::get('
-                                                                error ') }}',
+                                                                                                                                        error ') }}',
                     });
                 @endif
             });

@@ -67,13 +67,13 @@ class LarvaeController extends Controller
             return datatables()
                 ->of($this->larvae->getAll())
                 ->addColumn('larva_code', function ($data) {
-                    return $data->larva_code;
+                    return $data->larva_code ?? '-';
                 })
                 ->addColumn('district', function ($data) {
                     return ucwords(strtolower($data->district->name));
                 })
                 ->addColumn('location', function ($data) {
-                    return $data->locationType->name;
+                    return ucwords(strtolower($data->locationType->name));
                 })
                 ->addColumn('settlement', function ($data) {
                     return $data->settlementType->name;
@@ -383,7 +383,5 @@ class LarvaeController extends Controller
         ]);
     }
 
-    public function import(Request $request)
-    {
-    }
+    public function import(Request $request) {}
 }

@@ -314,7 +314,7 @@ Breadcrumbs::for('larvae.create', function (BreadcrumbTrail $trail) {
 // Larvae > Show
 Breadcrumbs::for('larvae.show', function (BreadcrumbTrail $trail, $data) {
     $trail->parent('larvae');
-    $trail->push($data->larva_code, route('admin.larvae.show', $data->id));
+    $trail->push($data->larva_code ?? '-', route('admin.larvae.show', $data->id ?? '-'));
 });
 
 // Larvae > Edit

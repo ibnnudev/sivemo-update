@@ -19,29 +19,6 @@
         <!-- Peta -->
         <div id="map" style="height: 100%; position: relative; z-index: 1;"></div>
     </div>
-
-    <x-card-container>
-        <div class="flex justify-between items-center">
-            <div>
-                <p class="text-sm font-semibold">Statistik Sampel</p>
-                <small class="text-gray-400">Jumlah sampel nyamuk yang diperiksa</small>
-            </div>
-            <x-select id="filterSamplePerYearChart" name="filterSamplePerYearChart">
-                @php
-                    $years = [];
-                    for ($i = 2021; $i <= date('Y'); $i++) {
-                        $years[] = $i;
-                    }
-                @endphp
-
-                @foreach ($years as $year)
-                    <option value="{{ $year }}">{{ $year }}</option>
-                @endforeach
-            </x-select>
-        </div>
-        <canvas id="samplePerYear"></canvas>
-    </x-card-container>
-    <br />
     <div class="grid grid-cols-4 gap-4">
         <div class="p-6 bg-white border border-gray-200 rounded-lg shadow flex items-center mb-4 md:mb-0">
             <i class="fas fa-users fa-2x text-primary mr-4 "></i>
@@ -88,7 +65,28 @@
             </div>
         </div>
     </div>
+    <br />
+    <x-card-container>
+        <div class="flex justify-between items-center">
+            <div>
+                <p class="text-sm font-semibold">Statistik Sampel</p>
+                <small class="text-gray-400">Jumlah sampel nyamuk yang diperiksa</small>
+            </div>
+            <x-select id="filterSamplePerYearChart" name="filterSamplePerYearChart">
+                @php
+                    $years = [];
+                    for ($i = 2021; $i <= date('Y'); $i++) {
+                        $years[] = $i;
+                    }
+                @endphp
 
+                @foreach ($years as $year)
+                    <option value="{{ $year }}">{{ $year }}</option>
+                @endforeach
+            </x-select>
+        </div>
+        <canvas id="samplePerYear"></canvas>
+    </x-card-container>
     <x-card-container class="mt-8" id="sampleAbjCard" style="height: 410px; max-height: 100%; overflow: hidden">
         <div class="md:flex justify-between items-center">
             <p class="text-sm font-semibold">

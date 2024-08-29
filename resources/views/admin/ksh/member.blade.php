@@ -1,11 +1,11 @@
 <x-app-layout>
     <x-breadcrumb name="ksh.member" />
     <x-card-container>
-        <div class="flex flex-col gap-3 md:flex-row md:justify-end mb-4">
+        {{-- <div class="flex flex-col gap-3 md:flex-row md:justify-end mb-4">
             <x-button type="button" data-modal-toggle="defaultModal" color="gray" type="button" class="justify-center">
                 Tambah
             </x-button>
-        </div>
+        </div> --}}
         <table id="memberTable">
             <thead>
                 <tr>
@@ -29,8 +29,7 @@
             <!-- Modal content -->
             <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
                 <!-- Modal header -->
-                <div
-                    class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
+                <div class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
                     <h3 class="text-sm font-semibold text-gray-900 dark:text-white">
                         Tambah Member
                     </h3>
