@@ -30,11 +30,8 @@ class AbjController extends Controller
                 ->addColumn('total_check', function ($data) {
                     return $data['total_check'];
                 })
-            // ->addColumn('location', function($data) {
-            //     return view('admin.abj.column.location', ['data' => $data['location']]);
-            // })
                 ->addColumn('abj', function ($data) {
-                    return view('admin.abj.column.abj_total', ['data' => $data]);
+                    return $data['abj_total'] . '%';
                 })
                 ->addColumn('created_at', function ($data) {
                     return $data['created_at'];

@@ -22,6 +22,7 @@ class AbjRepository implements AbjInterface
             ->with('district', 'village', 'ksh', 'ksh.district', 'ksh.village', 'ksh.detailKsh', 'ksh.detailKsh.tpaType')
             ->where('is_active', true)
             ->get()
+            ->sortBy('created_at')
             ->groupBy('district_id');
 
         $data = [];
@@ -67,7 +68,5 @@ class AbjRepository implements AbjInterface
         return $data;
     }
 
-    public function getGeoJson()
-    {
-    }
+    public function getGeoJson() {}
 }
