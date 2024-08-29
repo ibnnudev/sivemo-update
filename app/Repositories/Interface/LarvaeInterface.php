@@ -29,4 +29,6 @@ interface LarvaeInterface
     public function filterMapYear($year);
 
     public function filterMapRegency($regency_id);
+
+    public function getAllForDashboard();
 }

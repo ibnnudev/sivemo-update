@@ -1,105 +1,106 @@
 <x-app-layout>
     <x-breadcrumb name="dashboard" />
-    <div class="z-0 relative mb-4" style="height: 350px; border-radius: 6px;">
-        <!-- Legenda -->
-        <div class="absolute bottom-0 right-0 p-2 mr-2 mb-2 bg-white shadow text-xs" style="z-index: 2;">
-            <h5 class="mb-2 legend-text text-xs ">Legend</h5>
-            <ul class="list-unstyled">
-                <li>
-                    <span class="legend-color legend-green text-xs"></span>
-                    ABJ Normal
-                </li>
-                <li>
-                    <span class="legend-color legend-red text-xs"></span>
-                    ABJ Tidak Normal
-                </li>
-                <!-- Tambahkan elemen li sesuai dengan legenda Anda -->
-            </ul>
+    <div class="space-y-6">
+        <div class="z-0 relative mb-4" style="height: 350px; border-radius: 6px;">
+            <!-- Legenda -->
+            <div class="absolute bottom-0 right-0 p-2 mr-2 mb-2 bg-white shadow text-xs" style="z-index: 2;">
+                <h5 class="mb-2 legend-text text-xs ">Legend</h5>
+                <ul class="list-unstyled">
+                    <li>
+                        <span class="legend-color legend-green text-xs"></span>
+                        ABJ Normal
+                    </li>
+                    <li>
+                        <span class="legend-color legend-red text-xs"></span>
+                        ABJ Tidak Normal
+                    </li>
+                    <!-- Tambahkan elemen li sesuai dengan legenda Anda -->
+                </ul>
+            </div>
+            <!-- Peta -->
+            <div id="map" style="height: 100%; position: relative; z-index: 1;"></div>
         </div>
-        <!-- Peta -->
-        <div id="map" style="height: 100%; position: relative; z-index: 1;"></div>
-    </div>
-    <div class="grid grid-cols-4 gap-4">
-        <div class="p-6 bg-white border border-gray-200 rounded-lg shadow flex items-center mb-4 md:mb-0">
-            <i class="fas fa-users fa-2x text-primary mr-4 "></i>
-            <div>
-                <a href="#">
-                    <h5 class="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
-                        {{ number_format($usersCount, 0, ',', '.') }}
-                    </h5>
-                </a>
-                <p class="font-normal text-sm text-gray-500">Pengguna</p>
+        <div class="grid grid-cols-4 gap-4">
+            <div class="p-6 bg-white border border-gray-200 rounded-lg shadow flex items-center mb-4 md:mb-0">
+                <i class="fas fa-users fa-2x text-primary mr-4 "></i>
+                <div>
+                    <a href="#">
+                        <h5 class="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
+                            {{ number_format($usersCount, 0, ',', '.') }}
+                        </h5>
+                    </a>
+                    <p class="font-normal text-sm text-gray-500">Pengguna</p>
+                </div>
+            </div>
+            <div class="p-6 bg-white border border-gray-200 rounded-lg shadow flex items-center mb-4 md:mb-0">
+                <i class="fas fa-chart-simple fa-2x text-success mr-4"></i>
+                <div>
+                    <a href="#">
+                        <h5 class="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
+                            {{ number_format($totalSample, 0, ',', '.') }}
+                        </h5>
+                    </a>
+                    <p class="font-normal text-sm text-gray-500">Sampel Nyamuk</p>
+                </div>
+            </div>
+            <div class="p-6 bg-white border border-gray-200 rounded-lg shadow flex items-center mb-4 md:mb-0">
+                <i class="fas fa-mosquito fa-2x text-error mr-4"></i>
+                <div>
+                    <a href="#">
+                        <h5 class="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
+                            {{ number_format($totalMosquito, 0, ',', '.') }}
+                        </h5>
+                    </a>
+                    <p class="font-normal text-sm text-gray-500">Total Nyamuk</p>
+                </div>
+            </div>
+            <div class="p-6 bg-white border border-gray-200 rounded-lg shadow flex items-center mb-4 md:mb-0">
+                <i class="fas fa-worm fa-2x text-warning mr-4"></i>
+                <div>
+                    <a href="#">
+                        <h5 class="mb-1 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
+                            {{ number_format($totalLarva, 0, ',', '.') }}
+                        </h5>
+                    </a>
+                    <p class="font-normal text-sm text-gray-500">Total Larva</p>
+                </div>
             </div>
         </div>
-        <div class="p-6 bg-white border border-gray-200 rounded-lg shadow flex items-center mb-4 md:mb-0">
-            <i class="fas fa-chart-simple fa-2x text-success mr-4"></i>
-            <div>
-                <a href="#">
-                    <h5 class="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
-                        {{ number_format($totalSample, 0, ',', '.') }}
-                    </h5>
-                </a>
-                <p class="font-normal text-sm text-gray-500">Sampel Nyamuk</p>
-            </div>
-        </div>
-        <div class="p-6 bg-white border border-gray-200 rounded-lg shadow flex items-center mb-4 md:mb-0">
-            <i class="fas fa-mosquito fa-2x text-error mr-4"></i>
-            <div>
-                <a href="#">
-                    <h5 class="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
-                        {{ number_format($totalMosquito, 0, ',', '.') }}
-                    </h5>
-                </a>
-                <p class="font-normal text-sm text-gray-500">Total Nyamuk</p>
-            </div>
-        </div>
-        <div class="p-6 bg-white border border-gray-200 rounded-lg shadow flex items-center mb-4 md:mb-0">
-            <i class="fas fa-worm fa-2x text-warning mr-4"></i>
-            <div>
-                <a href="#">
-                    <h5 class="mb-1 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
-                        {{ number_format($totalLarva, 0, ',', '.') }}
-                    </h5>
-                </a>
-                <p class="font-normal text-sm text-gray-500">Total Larva</p>
-            </div>
-        </div>
-    </div>
-    <br />
-    <x-card-container>
-        <div class="flex justify-between items-center">
-            <div>
-                <p class="text-sm font-semibold">Statistik Sampel</p>
-                <small class="text-gray-400">Jumlah sampel nyamuk yang diperiksa</small>
-            </div>
-            <x-select id="filterSamplePerYearChart" name="filterSamplePerYearChart">
-                @php
-                    $years = [];
-                    for ($i = 2021; $i <= date('Y'); $i++) {
-                        $years[] = $i;
-                    }
-                @endphp
+        <x-card-container>
+            <div class="flex justify-between items-center">
+                <div>
+                    <p class="text-sm font-semibold">Statistik Sampel</p>
+                    <small class="text-gray-400">Jumlah sampel nyamuk yang diperiksa</small>
+                </div>
+                <x-select id="filterSamplePerYearChart" name="filterSamplePerYearChart">
+                    @php
+                        $years = [];
+                        for ($i = 2021; $i <= date('Y'); $i++) {
+                            $years[] = $i;
+                        }
+                    @endphp
 
-                @foreach ($years as $year)
-                    <option value="{{ $year }}">{{ $year }}</option>
-                @endforeach
-            </x-select>
-        </div>
-        <canvas id="samplePerYear"></canvas>
-    </x-card-container>
-    <x-card-container class="mt-8" id="sampleAbjCard" style="height: 410px; max-height: 100%; overflow: hidden">
-        <div class="md:flex justify-between items-center">
-            <p class="text-sm font-semibold">
-                Data Sampel dan ABJ (%)
-            </p>
-            <x-select id="regency" name="regency" label="Kabupaten">
-                @foreach ($regencies as $regency)
-                    <option value="{{ $regency->id }}">{{ $regency->name }}</option>
-                @endforeach
-            </x-select>
-        </div>
-        <canvas id="sampleAndAbj"></canvas>
-    </x-card-container>
+                    @foreach ($years as $year)
+                        <option value="{{ $year }}">{{ $year }}</option>
+                    @endforeach
+                </x-select>
+            </div>
+            <canvas id="samplePerYear"></canvas>
+        </x-card-container>
+        <x-card-container class="mt-8" id="sampleAbjCard" style="height: 410px; max-height: 100%; overflow: hidden">
+            <div class="md:flex justify-between items-center">
+                <p class="text-sm font-semibold">
+                    Data Sampel dan ABJ (%)
+                </p>
+                <x-select id="regency" name="regency" label="Kabupaten">
+                    @foreach ($regencies as $regency)
+                        <option value="{{ $regency->id }}">{{ $regency->name }}</option>
+                    @endforeach
+                </x-select>
+            </div>
+            <canvas id="sampleAndAbj"></canvas>
+        </x-card-container>
+    </div>
 
     @push('js-internal')
         <script src="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js"></script>
@@ -116,7 +117,7 @@
 
             }
 
-            const map = L.map('map').setView([-7.2756196, 112.7106256], 11.5);
+            const map = L.map('map').setView([-7.2756196, 112.7106256], 8);
 
             var markers = L.markerClusterGroup();
 
@@ -128,6 +129,8 @@
                     tileSize: 512,
                     zoomOffset: -1,
                     accessToken: '{{ env('MAPBOX_TOKEN') }}',
+                    attribution: '',
+                    detectRetina: true,
                 }
 
 
@@ -211,7 +214,6 @@
                                         });
                                     });
 
-
                                     layer.on('mouseover', function(e) {
                                         map.getContainer().style.cursor = 'pointer';
                                     });
@@ -231,7 +233,8 @@
 
                 updateMapData(); // map update
             @endif
-            let larvae = Object.values(@json($larvae));
+
+            let larvae = @json($larvae);
             let sample = Object.values(@json($sample));
 
             @if ($sample->count() > 0)
@@ -250,139 +253,125 @@
                     markers.addLayer(L.marker([parseFloat(coordinate[0]), parseFloat(coordinate[1])], {
                         icon: el
                     }).bindPopup(`
-                        <table class = "border-collapse border-none">
+                        <table class="border-collapse border-none">
                             <tbody>
                                 <tr>
-                                    <th colspan = "3" class = "p-0">Detail Lokasi</th>
+                                    <th colspan="3" class="p-0">Detail Lokasi</th>
                                 </tr>
                                 <tr>
-                                    <td class = "p-0">Provinsi</td>
-                                    <td class = "p-0">:</td>
-                                    <td class = "p-0">${coordinate[2].province.name}</td>
+                                    <td class="p-0 font-semibold">Provinsi</td>
+                                    <td class="p-0">:</td>
+                                    <td class="p-0">${coordinate[2].province.name}</td>
                                 </tr>
                                 <tr>
-                                    <td class = "p-0">Kabupaten</td>
-                                    <td class = "p-0">:</td>
-                                    <td class = "p-0">${coordinate[2].regency.name}</td>
+                                    <td class="p-0 font-semibold">Kabupaten</td>
+                                    <td class="p-0">:</td>
+                                    <td class="p-0">${coordinate[2].regency.name}</td>
                                 </tr>
                                 <tr>
-                                    <td class = "p-0">Kecamatan</td>
-                                    <td class = "p-0">:</td>
-                                    <td class = "p-0">${coordinate[2].district.name}</td>
+                                    <td class="p-0 font-semibold">Kecamatan</td>
+                                    <td class="p-0">:</td>
+                                    <td class="p-0">${coordinate[2].district.name}</td>
                                 </tr>
                                 <tr>
-                                    <td>Lokasi</td>
+                                    <td class="font-semibold">Lokasi</td>
                                     <td>: </td>
                                     <td>${coordinate[2].location_name}</td>
                                 </tr>
                                 <tr>
-                                    <td>Rumah Sakit</td>
+                                    <td class="font-semibold">Rumah Sakit</td>
                                     <td>: </td>
-                                    <td>${coordinate[2].public_health_name}</td>
+                                    <td>${coordinate[2].public_health_name ?? '-'}</td>
                                 </tr>
                             </tbody>
                         </table>
 
-                        <table class = "border-collapse border-none mt-4 w-full">
+                        <table class="border-collapse border-none mt-4 w-full">
                             <thead>
                                 <tr>
-                                    <th colspan = "2" class = "p-0">Detail Sampling</th>
+                                    <th colspan="2" class="p-0">Detail Sampling</th>
                                 </tr>
-                                <tr class   = "mt-3">
-                                <th colspan = "2" class = "p-0">Jenis Virus</th>
-                                <th class   = "p-0">Jumlah</th>
+                                <tr class="mt-3">
+                                    <th colspan="2" class="p-0">Jenis Virus</th>
+                                    <th class="p-0">Jumlah</th>
                                 </tr>
-                                </thead>
+                            </thead>
                             <tbody>
                                 ` +
                         Object.values(coordinate[2].type).map(function(type) {
                             return `
-                                        <tr>
-                                            <td class = "p-0">${type.name}:</td>
-                                            <td class = "p-0" align = "right">${type.amount}</td>
-                                        </tr>
-                                    `;
+                                <tr>
+                                    <td class="p-0 font-medium">${type.name}:</td>
+                                    <td class="p-0 text-right">${type.amount}</td>
+                                </tr>
+                            `;
                         }).join('') +
                         `
                             </tbody>
                         </table>
-                    `).openPopup());
-
-                    markers.on('mouseover', function() {
-                        markers.openPopup();
-                    });
+                    `).on('mouseover', function() {
+                        this.openPopup();
+                    }).on('mouseout', function() {
+                        this.closePopup();
+                    }));
 
                     map.addLayer(markers);
                 });
             @endif
 
             @if ($larvae->count() > 0)
-                let centerCoordinate = [];
                 for (let i = 0; i < larvae.length; i++) {
-                    centerCoordinate.push([larvae[i].latitude, larvae[i].longitude]);
-                }
+                    let detailContent = '';
 
-                centerCoordinate.forEach((coordinate, i) => {
-                    var el = L.divIcon({
-                        className: 'custom-marker',
-                        html: '<img src="{{ asset('assets/images/larva-icon.png') }}" class="w-6 h-6">'
+                    // Check if detail_larvaes is empty
+                    if (larvae[i].detail_larvaes.length === 0) {
+                        detailContent = '<p class="text-center">Tidak ada informasi detail / tidak lengkap</p>';
+                    } else {
+                        detailContent = `<ul class="list-none list-inside">`;
+                        larvae[i].detail_larvaes.map((detail) => {
+                            console.log(detail);
+                            detailContent += `<li><strong>Jenis TPA:</strong> ${detail.tpa_type.name}</li>`;
+                            detailContent += `<li><strong>Jml. Larva:</strong> ${detail.amount_larva}</li>`;
+                            detailContent += `<li><strong>Jml. Telur:</strong> ${detail.amount_egg}</li>`;
+                            detailContent += `<li><strong>Larva Dewasa:</strong> ${detail.number_of_adults}</li>`;
+                            detailContent += `<li><strong>Temp. Air:</strong> ${detail.water_temperature} °C</li>`;
+                            detailContent += `<li><strong>PH Air:</strong> ${detail.ph}</li>`;
+                            detailContent += `<li><strong>Salinitas:</strong> ${detail.salinity}</li>`;
+                            detailContent +=
+                                `<li><strong>Tumbuhan:</strong> ${detail.aquatic_plant == 'available' ? 'Ada' : 'Tidak Ada'} </li>`;
+                        });
+                        detailContent += `</ul>`;
+                    }
+
+                    let marker = L.marker([larvae[i].latitude, larvae[i].longitude], {
+                        icon: L.divIcon({
+                            html: `<img src="{{ asset('assets/images/larvae/icon.jpg') }}" class="w-6 h-6">`,
+                            className: 'text-white bg-transparent',
+                            iconAnchor: [12, 12], // Adjust these values to correctly position your icon
+                            popupAnchor: [0, -20] // Adjust the popup to appear above the icon
+                        })
                     });
 
-                    var marker = L.marker([parseFloat(coordinate[0]), parseFloat(coordinate[1])], {
-                        icon: el
-                    }).addTo(map);
-
-                    marker.bindPopup(
-                        `<table class="table-sm">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>TPA</th>
-                    <th>Larva</th>
-                    <th>Telur</th>
-                    <th>Nyamuk Dewasa</th>
-                    <th>Suhu Air</th>
-                    <th>Salinitas</th>
-                    <th>PH</th>
-                    <th>Tumbuhan Air</th>
-                </tr>
-            </thead>
-            <tbody>
-                ` +
-                        larvae[i].detail_larvaes[0].map((data, index) => {
-                            return `<tr>
-                        <td>${index + 1}</td>
-                        <td>${data.tpa_type.name}</td>
-                        <td>${data.amount_larva}</td>
-                        <td>${data.amount_egg}</td>
-                        <td>${data.number_of_adults}</td>
-                        <td>${data.water_temperature}</td>
-                        <td>${data.salinity}</td>
-                        <td>${data.ph}</td>
-                        <td>${data.aquatic_plant == 'available' ? 'Ada' : 'Tidak Ada'}</td>
-                    </tr>`
-                        }).join('') +
-                        `</tbody>
-        </table>`
-                        // adjust width popup
-                    ).on('popupopen', function() {
-                        $('.leaflet-popup-content').width('auto');
+                    marker.bindPopup(detailContent).on('popupopen', function() {
+                        $('.leaflet-popup-content').width('w-96');
                     });
 
-                    // on click pan to marker
-                    marker.on('click', function() {
-                        map.setZoom(15);
-                        map.panTo(marker.getLatLng());
-                    });
-
-                    // on hover show popup
+                    // Show popup on hover
                     marker.on('mouseover', function() {
                         marker.openPopup();
                     });
-                });
+
+                    // Zoom to marker when clicked
+                    marker.on('click', function() {
+                        map.setView([larvae[i].latitude, larvae[i].longitude], 15);
+                    });
+
+                    marker.addTo(map);
+                }
+
+                // Add layer to map
+                map.addLayer(markers);
             @endif
-
-
 
             // full screen
             L.control.fullscreen().addTo(map);

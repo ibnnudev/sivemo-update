@@ -181,61 +181,56 @@
                 map.zoomControl.remove();
 
                 for (let i = 0; i < larvae.length; i++) {
+                    let detailContent = '';
+
+                    // Check if detail_larvaes is empty
+                    if (larvae[i].detail_larvaes.length === 0) {
+                        detailContent = '<p class="text-center">Tidak ada informasi detail / tidak lengkap</p>';
+                    } else {
+                        detailContent = `<ul class="list-none list-inside">`;
+                        larvae[i].detail_larvaes.map((detail) => {
+                            console.log(detail);
+                            detailContent += `<li><strong>Jenis TPA:</strong> ${detail.tpa_type.name}</li>`;
+                            detailContent += `<li><strong>Jml. Larva:</strong> ${detail.amount_larva}</li>`;
+                            detailContent += `<li><strong>Jml. Telur:</strong> ${detail.amount_egg}</li>`;
+                            detailContent +=
+                                `<li><strong>Larva Dewasa:</strong> ${detail.number_of_adults}</li>`;
+                            detailContent +=
+                                `<li><strong>Temp. Air:</strong> ${detail.water_temperature} °C</li>`;
+                            detailContent += `<li><strong>PH Air:</strong> ${detail.ph}</li>`;
+                            detailContent += `<li><strong>Salinitas:</strong> ${detail.salinity}</li>`;
+                            detailContent +=
+                                `<li><strong>Tumbuhan:</strong> ${detail.aquatic_plant == 'available' ? 'Ada' : 'Tidak Ada'} </li>`;
+                        });
+                        detailContent += `</ul>`;
+                    }
+
                     let marker = L.marker([larvae[i].latitude, larvae[i].longitude], {
                         icon: L.divIcon({
-                            // image
-                            html: `<img src="{{ asset('assets/images/larva-icon.png') }}" class="w-6 h-6">`,
+                            html: `<img src="{{ asset('assets/images/larvae/icon.jpg') }}" class="w-6 h-6">`,
                             className: 'text-white bg-transparent',
-                            iconAnchor: [15, 15],
-                            popupAnchor: [0, -15]
+                            iconAnchor: [12, 12], // Adjust these values to correctly position your icon
+                            popupAnchor: [0, -20] // Adjust the popup to appear above the icon
                         })
                     });
 
-                    marker.bindPopup(
-                        `<table class="table-sm">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>TPA</th>
-                                    <th>Larva</th>
-                                    <th>Telur</th>
-                                    <th>Nyamuk Dewasa</th>
-                                    <th>Suhu Air</th>
-                                    <th>Salinitas</th>
-                                    <th>PH</th>
-                                    <th>Tumbuhan Air</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ` +
-                        larvae[i].detail_larvaes.map((data, index) => {
-                            return `<tr>
-                                        <td>${index + 1}</td>
-                                        <td>${data.tpa_type.name}</td>
-                                        <td>${data.amount_larva}</td>
-                                        <td>${data.amount_egg}</td>
-                                        <td>${data.number_of_adults}</td>
-                                        <td>${data.water_temperature}</td>
-                                        <td>${data.salinity}</td>
-                                        <td>${data.ph}</td>
-                                        <td>${data.aquatic_plant == 'available' ? 'Ada' : 'Tidak Ada'}</td>
-                                    </tr>`
-                        }).join('') +
-                        `</tbody>
-                        </table>`
-                        // adjust width popup
-                    ).on('popupopen', function() {
-                        $('.leaflet-popup-content').width('auto');
+                    marker.bindPopup(detailContent).on('popupopen', function() {
+                        $('.leaflet-popup-content').width('w-96');
                     });
 
-                    // on click pan to marker
+                    // Show popup on hover
+                    marker.on('mouseover', function() {
+                        marker.openPopup();
+                    });
+
+                    // Zoom to marker when clicked
                     marker.on('click', function() {
-                        map.setZoom(15);
-                        map.panTo(marker.getLatLng());
+                        map.setView([larvae[i].latitude, larvae[i].longitude], 15);
                     });
 
                     markers.addLayer(marker);
                 }
+
 
                 map.addLayer(markers);
 

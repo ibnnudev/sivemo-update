@@ -510,3 +510,7 @@ select option {
 .dataTables_filter label {
     @apply text-xs;
 }
+
+.leaflet-control-attribution.leaflet-control {
+    display: none;
+}

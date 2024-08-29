@@ -24,6 +24,12 @@ class LarvaeRepository implements LarvaeInterface
         return $this->larvae->with('regency', 'district', 'village', 'locationType', 'settlementType', 'environmentType', 'buildingType', 'floorType', 'createdBy', 'updatedBy', 'detailLarvaes', 'detailLarvaes.tpaType')->orderBy('larva_code', 'desc')->get();
     }
 
+    public function getAllForDashboard()
+    {
+        $results = $this->larvae->with('detailLarvaes', 'detailLarvaes.tpaType')->orderBy('larva_code', 'desc')->get();
+        return $results;
+    }
+
     public function getById($id)
     {
         return $this->larvae->with('detailLarvaes.tpaType')->find($id);
