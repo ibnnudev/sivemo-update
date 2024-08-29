@@ -33,7 +33,7 @@
                     </div>
                 </div>
                 <div>
-                    <p class="text-xs font-semibold mb-4">Detail Koordinat</p>
+                    <p class="text-xs font-semibold mb-6">Detail Koordinat</p>
                     <div class="sm:grid grid-cols-2 gap-x-4">
                         <x-input id="latitude" label="Latitude" name="latitude" type="text" required />
                         <x-input id="longitude" label="Longitude" name="longitude" type="text" required />
