@@ -4,19 +4,19 @@
     <x-card-container>
         <div class="lg:flex gap-x-3 mb-4">
             <div class="flex items-center space-x-2" style="width: 200px;">
-                <label for="filterYear" class="text-sm font-medium">Tahun:</label>
+                <label for="filterYear" class="text-xs font-medium">Tahun:</label>
                 <select id="filterYear" class="form-select" aria-label="Filter tahun">
                     <!-- Tambahkan opsi tahun sesuai dengan kebutuhan Anda -->
                 </select>
             </div>
-            <x-link-button id="filterButton" color="gray" class="py-2.5 mb-1.5">
+            <x-link-button id="filterButton" color="gray" class="py-2.5">
                 Filter
             </x-link-button>
 
         </div>
         <div class="z-0 relative mb-4" style="height: 350px; border-radius: 6px;">
             <!-- Legenda -->
-            <div class="absolute bottom-0 right-0 p-2 bg-white shadow" style="z-index: 2;">
+            <div class="absolute bottom-0 right-0 p-2 bg-white shadow sm:text-xs text-sm" style="z-index: 2;">
                 <h5 class="mb-2 legend-text ">Legend</h5>
                 <ul class="list-unstyled">
                     <li>
@@ -153,7 +153,7 @@
                     icon: 'success',
                     title: 'Berhasil',
                     text: '{{ Session::get('
-                                                                                            success ') }}'
+                                                                                                                                                        success ') }}'
                 })
             @endif
 
@@ -162,7 +162,7 @@
                     icon: 'error',
                     title: 'Gagal',
                     text: '{{ Session::get('
-                                                                                            error ') }}'
+                                                                                                                                                        error ') }}'
                 })
             @endif
             const map = L.map('map').setView([-7.2756196, 112.7106256], 11.5);

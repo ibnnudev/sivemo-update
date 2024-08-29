@@ -23,6 +23,6 @@
         @if (isset($step)) step="{{ $step }}" @endif>
 
     @error($name)
-        <p class="text-sm text-red-500 mt-1">{{ $message }}</p>
+        <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
     @enderror
 </div>

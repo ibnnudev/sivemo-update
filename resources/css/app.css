@@ -497,3 +497,16 @@ select option {
 .legend-red {
     background-color: #e74a3b;
 }
+
+.dataTables_wrapper .dataTables_length select {
+    width: 50px;
+}
+
+.dataTables_length select,
+.dataTables_filter input,
+.dataTables_info,
+.dataTables_paginate a,
+.dataTables_length label,
+.dataTables_filter label {
+    @apply text-xs;
+}

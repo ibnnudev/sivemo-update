@@ -5,31 +5,35 @@
             @csrf
             <div class="sm:grid grid-cols-3 gap-x-4">
                 <div>
-                    <p class="text-sm font-semibold mb-6">Detail Sampling</p>
-                    <x-input id="public_health_name" label="Pukesmas" name="public_health_name" type="text" />
-                    <x-input id="location_name" label="Nama Lokasi" name="location_name" type="text" required />
-                    <x-select id="location_type_id" label="Jenis Lokasi" name="location_type_id" isFit="true"
-                        required>
-                        @foreach ($locationTypes as $locationType)
-                            <option value="{{ $locationType->id }}">{{ $locationType->name }}</option>
-                        @endforeach
-                    </x-select>
-                    <x-textarea id="description" label="Keterangan" name="description" type="text" />
+                    <p class="text-xs font-semibold mb-6">Detail Sampling</p>
+                    <div class="space-y-6">
+                        <x-input id="public_health_name" label="Pukesmas" name="public_health_name" type="text" />
+                        <x-input id="location_name" label="Nama Lokasi" name="location_name" type="text" required />
+                        <x-select id="location_type_id" label="Jenis Lokasi" name="location_type_id" isFit="true"
+                            required>
+                            @foreach ($locationTypes as $locationType)
+                                <option value="{{ $locationType->id }}">{{ $locationType->name }}</option>
+                            @endforeach
+                        </x-select>
+                        <x-textarea id="description" label="Keterangan" name="description" type="text" />
+                    </div>
                 </div>
                 <div>
-                    <p class="text-sm font-semibold mb-6">Detail Lokasi</p>
-                    <x-select id="province_id" label="Provinsi" name="province_id" isFit="true" required>
-                        @foreach ($provinces as $province)
-                            <option value="{{ $province->id }}">{{ $province->name }}</option>
-                        @endforeach
-                    </x-select>
-                    <x-select id="regency_id" label="Kabupaten/Kota" name="regency_id" isFit="true" required />
-                    <x-select id="district_id" label="Kecamatan" name="district_id" isFit="true" required />
-                    <x-select id="village_id" label="Desa" name="village_id" isFit="true" required />
-                    <p id="address" class="text-sm"></p>
+                    <p class="text-xs font-semibold mb-6">Detail Lokasi</p>
+                    <div class="space-y-6">
+                        <x-select id="province_id" label="Provinsi" name="province_id" isFit="true" required>
+                            @foreach ($provinces as $province)
+                                <option value="{{ $province->id }}">{{ $province->name }}</option>
+                            @endforeach
+                        </x-select>
+                        <x-select id="regency_id" label="Kabupaten/Kota" name="regency_id" isFit="true" required />
+                        <x-select id="district_id" label="Kecamatan" name="district_id" isFit="true" required />
+                        <x-select id="village_id" label="Desa" name="village_id" isFit="true" required />
+                        <p id="address" class="text-xs"></p>
+                    </div>
                 </div>
                 <div>
-                    <p class="text-sm font-semibold mb-4">Detail Koordinat</p>
+                    <p class="text-xs font-semibold mb-4">Detail Koordinat</p>
                     <div class="sm:grid grid-cols-2 gap-x-4">
                         <x-input id="latitude" label="Latitude" name="latitude" type="text" required />
                         <x-input id="longitude" label="Longitude" name="longitude" type="text" required />
@@ -43,13 +47,13 @@
             </div>
             <hr class="my-6 border-gray-100">
 
-            <div class="p-4 text-sm text-gray-800 rounded-lg bg-gray-100 mb-3" role="alert">
+            <div class="p-4 text-xs text-gray-800 rounded-lg bg-gray-100 mb-3" role="alert">
                 Jenis vektor yang anda pilih akan menjadi jenis vektor yang akan diambil sampelnya dan akan diisi
                 kemudian
                 data morfotipe dan serotipenya
             </div>
             <ul
-                class="items-center w-full gap-x-2 text-sm font-medium text-gray-900 bg-white rounded-lg sm:flex flex-wrap">
+                class="items-center w-full gap-x-2 text-xs font-medium text-gray-900 bg-white rounded-lg sm:flex flex-wrap">
                 @foreach ($viruses as $virus)
                     <li class="">
                         <div class="flex items-center pl-3">
@@ -57,7 +61,7 @@
                                 value="{{ $virus->id }}" name="viruses[]" onchange="checkVirus({{ $virus->id }})"
                                 class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
                             <label for="virus-{{ $virus->id }}-checkbox-list"
-                                class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ $virus->name }}</label>
+                                class="w-full py-3 ml-2 text-xs font-medium text-gray-900 dark:text-gray-300">{{ $virus->name }}</label>
                         </div>
                     </li>
                 @endforeach
@@ -67,7 +71,7 @@
             <div class="border-b border-gray-200 my-6"></div>
 
             <ul
-                class="items-center w-full gap-x-2 text-sm font-medium text-gray-900 bg-white rounded-lg sm:flex flex-wrap">
+                class="items-center w-full gap-x-2 text-xs font-medium text-gray-900 bg-white rounded-lg sm:flex flex-wrap">
                 <li class="hidden" id="aegyptiIdentificationContainer">
                     <x-select id="aedesAegyptiIdentification" name="aedesAegyptiIdentification"
                         label="Identifikasi Aegpyti">

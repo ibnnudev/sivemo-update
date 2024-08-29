@@ -3,7 +3,7 @@
     <x-card-container>
         <div class="z-0 relative mb-4" style="height: 350px; border-radius: 6px;">
             <!-- Legenda -->
-            <div class="absolute bottom-0 right-0 p-2 bg-white shadow" style="z-index: 2;">
+            <div class="absolute bottom-0 right-0 p-2 bg-white shadow sm:text-xs text-sm" style="z-index: 2;">
                 <h5 class="mb-2 legend-text ">Legend</h5>
                 <ul class="list-unstyled">
                     <li>

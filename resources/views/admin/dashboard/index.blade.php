@@ -2,15 +2,15 @@
     <x-breadcrumb name="dashboard" />
     <div class="z-0 relative mb-4" style="height: 350px; border-radius: 6px;">
         <!-- Legenda -->
-        <div class="absolute bottom-0 right-0 p-2 mr-2 mb-2 bg-white shadow text-sm" style="z-index: 2;">
-            <h5 class="mb-2 legend-text ">Legend</h5>
+        <div class="absolute bottom-0 right-0 p-2 mr-2 mb-2 bg-white shadow text-xs" style="z-index: 2;">
+            <h5 class="mb-2 legend-text text-xs ">Legend</h5>
             <ul class="list-unstyled">
                 <li>
-                    <span class="legend-color legend-green"></span>
+                    <span class="legend-color legend-green text-xs"></span>
                     ABJ Normal
                 </li>
                 <li>
-                    <span class="legend-color legend-red"></span>
+                    <span class="legend-color legend-red text-xs"></span>
                     ABJ Tidak Normal
                 </li>
                 <!-- Tambahkan elemen li sesuai dengan legenda Anda -->
