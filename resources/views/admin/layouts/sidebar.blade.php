@@ -37,6 +37,18 @@
                         active="{{ request()->routeIs('admin.ksh.member') || request()->routeIs('admin.ksh.member.create') }}" />
                 @endif
             </x-sidebar-dropdown>
+
+            {{-- Master Outdoor --}}
+            <x-sidebar-dropdown title="Outdoor Breeding Site" icon="fas fa-file-circle-check" toggle="outdoor-bs"
+                active="{{ request()->routeIs('admin.outdoor-breeding.*') }}">
+                
+                <x-sidebar-item title="Artificial " route="{{ route('admin.outdoor-breeding.artificial_index') }}"
+                    active="{{ request()->routeIs('admin.outdoor-breeding.artificial_index') }}" />
+                <x-sidebar-item title="Natural " route="{{ route('admin.outdoor-breeding.natural_index') }}"
+                    active="{{ request()->routeIs('admin.outdoor-breeding.natural_index') }}" />
+    
+            </x-sidebar-dropdown>
+            
             <!-- Master Larvae -->
             @if (auth()->user()->role == 'admin')
                 <x-sidebar-item title="Data Kasus" route="{{ route('admin.tcases.index') }}"

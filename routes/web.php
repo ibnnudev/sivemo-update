@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\KshController;
 use App\Http\Controllers\Admin\LarvaeController;
 use App\Http\Controllers\Admin\LocationTypeController;
 use App\Http\Controllers\Admin\MorphotypeController;
+use App\Http\Controllers\Admin\OutdoorBreedingSite;
 use App\Http\Controllers\Admin\ProvinceController;
 use App\Http\Controllers\Admin\RegencyController;
 use App\Http\Controllers\Admin\SampleController;
@@ -111,6 +112,12 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
         // Virus
         Route::get('virus/list', [VirusController::class, 'list'])->name('admin.virus.list');
         Route::resource('virus', VirusController::class, ['as' => 'admin']);
+
+        // 
+        Route::group(['prefix'=>'outdoor-breeding','as'=>'admin.outdoor-breeding.'],function(){
+            Route::get('artificial',[OutdoorBreedingSite::class,'artificial_index'])->name('artificial_index');
+            Route::get('natural',[OutdoorBreedingSite::class,'natural_index'])->name('natural_index');
+        });
 
         // Morphotype
         Route::get('morphotype/list', [MorphotypeController::class, 'list'])->name('admin.morphotype.list');

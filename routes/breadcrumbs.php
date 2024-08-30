@@ -421,3 +421,18 @@ Breadcrumbs::for('cluster.clustering', function (BreadcrumbTrail $trail) {
     $trail->parent('dashboard');
     $trail->push('Klasterisasi');
 });
+
+Breadcrumbs::for('Outdoor Breeding Site', function (BreadcrumbTrail $trail) {
+    $trail->push('Outdoor Breeding Site');
+});
+
+Breadcrumbs::for('outdoor-breeding.artificial_index',function(BreadcrumbTrail $trail){
+    $trail->parent('dashboard');
+    $trail->parent('Outdoor Breeding Site');
+    $trail->push('Artificial');
+});
+Breadcrumbs::for('outdoor-breeding.natural_index',function(BreadcrumbTrail $trail){
+    $trail->parent('dashboard');
+    $trail->parent('Outdoor Breeding Site');
+    $trail->push('Natural');
+});
