@@ -217,7 +217,7 @@ class SampleRepository implements SampleInterface
         foreach ($sample as $key => $value) {
             $data[$key]['regency_id'] = $value->regency_id;
             $data[$key]['regency'] = $value->regency->name;
-            $data[$key]['location'] = $value->latitude.', '.$value->longitude;
+            $data[$key]['location'] = $value->latitude . ', ' . $value->longitude;
             $data[$key]['count'] = $this->sample->active()->where('regency_id', $value->regency_id)->count();
             $data[$key]['type'] = $value->detailSampleViruses->map(function ($item) {
                 if ($item->virus_id == 1 && $item->identification == 1) {
@@ -450,7 +450,7 @@ class SampleRepository implements SampleInterface
         }
 
         // add virus type even the amount is 0
-        $virus = Virus::all();
+        $virus = Virus::all()->where('is_active', true);
         foreach ($virus as $key => $value) {
             $data = collect($data)->map(function ($item) use ($value) {
                 // check if virus type is already exist, enter another virus type

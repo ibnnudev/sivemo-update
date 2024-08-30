@@ -3,17 +3,17 @@
 <div class="form-control w-full {{ $isFit == 'fit' ? 'max-w-xs' : '' }}">
     @if ($label)
         <label class="label pt-0 pl-0">
-            <span class="text-sm font-medium">{{ $label }} {!! $required == true ? '<sup class="text-error">*</sup>' : '' !!}</span>
+            <span class="text-xs font-medium">{{ $label }} {!! $required == true ? '<sup class="text-error">*</sup>' : '' !!}</span>
         </label>
     @endif
     <select name="{{ $name }}" id="{{ $id }}" {!! $attributes->merge([
-        'class' => 'select select-bordered',
+        'class' => 'select select-bordered text-xs',
     ]) !!}>
         {{ $slot }}
     </select>
-    <label class="label">
-        @error($name)
+    @error($name)
+        <label class="label text-xs">
             <span class="label-text-alt text-error">{{ $message }}</span>
-        @enderror
-    </label>
+        </label>
+    @enderror
 </div>

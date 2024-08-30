@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Regency;
-use App\Models\Sample;
 use App\Models\User;
 use App\Repositories\Interface\AbjInterface;
 use App\Repositories\Interface\LarvaeInterface;
@@ -40,6 +38,7 @@ class DashboardController extends Controller
 
     public function index(Request $request)
     {
+        // dd($this->larva->getAllForDashboard());
         return view('admin.dashboard.index', [
             'samplePerYear' => $this->sample->getSamplePerYear(date('Y')),
             'usersCount'    => User::all()->count(),

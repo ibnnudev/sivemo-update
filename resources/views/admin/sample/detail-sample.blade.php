@@ -1,21 +1,11 @@
 <x-app-layout>
     <x-breadcrumb name="sample.detail-sample" :data="$sample" />
 
-    <div class="flex flex-col gap-3 md:flex-row md:justify-end mb-4">
-        {{-- <x-link-button route="{{ route('admin.sample.detail-sample.export', $sample->id) }}" class="justify-center"
-            color="gray" type="button" target="_blank">
-            Unduh Template Import
-        </x-link-button> --}}
-        {{-- <x-button id="btnImport" class="justify-center bg-primary" type="button">
-            Import
-        </x-button> --}}
-    </div>
-
     <div class="sm:grid grid-cols-3 gap-x-4">
         @foreach ($sample->detailSampleViruses as $detailSample)
-            <x-card-container class="mb-4 md:mb-0">
+            <x-card-container class="mb-4 md:mb-0 sm:text-xs">
                 <div class="flex justify-between items-center">
-                    <h3 class="font-semibold text-sm">
+                    <h3 class="font-semibold">
                         {{ $detailSample->virus->name }}
                     </h3>
                     <div class="sm:flex gap-x-2">
@@ -28,12 +18,12 @@
                 </div>
 
                 @if ($detailSample->virus_id == 1 && $detailSample->identification == 0)
-                    <h3 class="text-sm">
+                    <h3 class="text-xs">
                         Total Individu: {{ $detailSample->amount }}
                     </h3>
                 @elseif ($detailSample->virus_id == 1 && $detailSample->identification == 1)
                     @if ($detailSample->detailSampleMorphotypes->count() > 0)
-                        <div class="xl:flex items-center justify-between text-sm mt-5">
+                        <div class="xl:flex items-center justify-between text-xs mt-5">
                             <h3 class="">
                                 Total Individu
                             </h3>
@@ -44,32 +34,32 @@
                         <hr class="my-3">
                         <ul class="list-inside">
                             @foreach ($detailSample->detailSampleMorphotypes as $item)
-                                <li class="text-sm mb-2 flex justify-between items-center">
+                                <li class="text-xs mb-2 flex justify-between items-center">
                                     <span class="">{{ $item->morphotype->name }}</span>
                                     <span class="font-semibold">{{ $item->amount }}</span>
                                 </li>
                             @endforeach
                         </ul>
                         <br>
-                        <h3 class="text-sm font-semibold mt-2">
+                        <h3 class="text-xs font-semibold mt-2">
                             Detail Serotipe
                         </h3>
                         <hr class="my-3">
                         <ul class="list-inside">
                             @foreach ($sample->detailSampleSerotypes as $item)
-                                <li class="text-sm mb-2 flex justify-between items-center">
+                                <li class="text-xs mb-2 flex justify-between items-center">
                                     <span class="">{{ $item->serotype->name }}</span>
                                     <span class="">{{ $item->status == 1 ? '✓' : '✕' }}</span>
                                 </li>
                             @endforeach
                         </ul>
                     @else
-                        <div class="p-4 text-sm text-gray-800 rounded-lg bg-gray-100 mt-4" role="alert">
+                        <div class="p-4 text-xs text-gray-800 rounded-lg bg-gray-100 mt-4" role="alert">
                             <span class="">Data Sampling Kosong</span>
                         </div>
                     @endif
                 @elseif ($detailSample->virus_id != 1 && $detailSample->identification == null)
-                    <div class="xl:flex items-center justify-between text-sm mt-5">
+                    <div class="xl:flex items-center justify-between text-xs mt-5">
                         <h3 class="">
                             Total Individu
                         </h3>

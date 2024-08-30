@@ -24,7 +24,7 @@
                                     class="text-sm font-medium text-gray-500 hover:underline">Belum punya
                                     akun?</a> --}}
                                 <a href="{{ route('password.request') }}"
-                                    class="text-sm font-medium text-gray-500 hover:underline">Lupa kata
+                                    class="text-xs font-medium text-gray-500 hover:underline">Lupa kata
                                     sandi?</a>
                             </div>
                         </div>

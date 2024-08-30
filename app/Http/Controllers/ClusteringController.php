@@ -116,56 +116,58 @@ class ClusteringController extends Controller
 
     public function clustering(Request $request)
     {
+        return view('admin.cluster.clustering');
+    }
 
+    // Controller method
+    public function filter(Request $request)
+    {
         if ($request->ajax()) {
             $epsilon = $request['epsilon'];
             $minPts = $request['minPts'];
+            $offset = $request['offset'] ?? 0;
+            $limit = 500; // Process 1000 items per request
 
-            $dataset = Cluster::all();
-            $cluster = $this->operation->processCluster($dataset->map(function ($item) {
+            $dataset = Cluster::skip($offset)->take($limit)->get();
+            $datasetArray = $dataset->map(function ($item) {
                 return [
                     $item->latitude,
                     $item->longitude,
                 ];
-            })->toArray(),  $epsilon, $minPts);
-
-            // append each cluster with informtion from dataset
-            foreach ($cluster as $key => $value) {
-                $cluster[$key] = collect($value)->map(function ($item) use ($dataset) {
-                    return $dataset->where('latitude', $item[0])->where('longitude', $item[1])->first();
-                })->toArray();
-
-                // append cluster number
-                foreach ($cluster[$key] as $k => $v) {
-                    $cluster[$key][$k]['cluster'] = $key;
-                }
-            }
-
-            return response()->json($cluster);
-        }
-
-        $dataset = Cluster::all();
-        $cluster = $this->operation->processCluster($dataset->map(function ($item) {
-            return [
-                $item->latitude,
-                $item->longitude,
-            ];
-        })->toArray(),  0.002839, 1);
-
-        // append each cluster with informtion from dataset
-        foreach ($cluster as $key => $value) {
-            $cluster[$key] = collect($value)->map(function ($item) use ($dataset) {
-                return $dataset->where('latitude', $item[0])->where('longitude', $item[1])->first();
             })->toArray();
 
-            // append cluster number
-            foreach ($cluster[$key] as $k => $v) {
-                $cluster[$key][$k]['cluster'] = $key;
-            }
-        }
+            $partialCluster = $this->operation->processCluster($datasetArray, $epsilon, $minPts);
 
-        return view('admin.cluster.clustering', [
-            'cluster' => $cluster,
+            // Append each cluster with information from dataset
+            $processedCluster = [];
+            foreach ($partialCluster as $key => $value) {
+                $processedCluster[$key] = collect($value)->map(function ($item) use ($dataset, $key) {
+                    $point = $dataset->where('latitude', $item[0])->where('longitude', $item[1])->first();
+                    if ($point) {
+                        $point = $point->toArray();
+                        $point['cluster'] = $key;
+                    }
+                    return $point;
+                })->filter()->values()->toArray();
+            }
+
+            $totalCount = Cluster::count();
+            $isComplete = ($offset + $limit) >= $totalCount;
+
+            return response()->json([
+                'cluster' => $processedCluster,
+                'offset' => $offset + $limit,
+                'isComplete' => $isComplete,
+            ]);
+        }
+    }
+
+    // Add a new method to get the initial data
+    public function getInitialData()
+    {
+        $totalCount = Cluster::count();
+        return response()->json([
+            'totalCount' => $totalCount,
         ]);
     }
 }

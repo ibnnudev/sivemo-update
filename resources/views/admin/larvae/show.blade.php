@@ -2,10 +2,12 @@
     <x-breadcrumb name="larvae.show" :data="$larva" />
     <x-card-container>
         <div class="flex flex-col gap-3 md:flex-row md:justify-end mb-4">
-            <x-link-button route="{{ route('admin.larvae.detail.create', $larva->id) }}" color="gray" class="justify-center" type="button">
+            <x-link-button route="{{ route('admin.larvae.detail.create', $larva->id) }}" color="gray"
+                class="justify-center" type="button">
                 Tambah
             </x-link-button>
-            <x-link-button route="{{ route('admin.larvae.detail.edit', $larva->id) }}" color="gray" type="button" class="justify-center">
+            <x-link-button route="{{ route('admin.larvae.detail.edit', $larva->id) }}" color="gray" type="button"
+                class="justify-center">
                 Ubah
             </x-link-button>
         </div>

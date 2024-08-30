@@ -7,51 +7,43 @@
             <div class="sm:grid grid-cols-2 gap-x-4">
                 <div>
                     <p class="text-sm font-semibold mb-6">Detail Sampling</p>
-                    <x-select id="regency_id" label="Kabupaten/Kota" name="regency_id" isFit="true" required>
-                        @foreach ($regencies as $regency)
-                            <option value="{{ $regency->id }}"
-                                {{ $tcases['regency_id'] == $regency->id ? 'selected' : '' }}>
-                                {{ $regency->name }}
-                            </option>
-                        @endforeach
-                    </x-select>
-                    <x-select id="district_id" label="Kecamatan" name="district_id" isFit="true" required>
-                        <option value="{{ $tcases->district_id }}" selected>{{ $tcases->district->name }}</option>
-                    </x-select>
+                    <div class="space-y-6">
+                        <x-select id="regency_id" label="Kabupaten/Kota" name="regency_id" isFit="true" required>
+                            @foreach ($regencies as $regency)
+                                <option value="{{ $regency->id }}"
+                                    {{ $tcases['regency_id'] == $regency->id ? 'selected' : '' }}>
+                                    {{ $regency->name }}
+                                </option>
+                            @endforeach
+                        </x-select>
+                        <x-select id="district_id" label="Kecamatan" name="district_id" isFit="true" required>
+                            <option value="{{ $tcases->district_id }}" selected>{{ $tcases->district->name }}</option>
+                        </x-select>
 
-                    <x-select id="village_id" label="Desa" name="village_id" isFit="true" required>
-                        <option value="{{ $tcases->village_id }}" selected>{{ $tcases->village->name }}</option>
-                    </x-select>
-                    <p class="text-sm" id="address"></p>
+                        <x-select id="village_id" label="Desa" name="village_id" isFit="true" required>
+                            <option value="{{ $tcases->village_id }}" selected>{{ $tcases->village->name }}</option>
+                        </x-select>
+                        <p class="text-sm" id="address"></p>
+                    </div>
                 </div>
                 <div>
                     <p class="text-sm font-semibold mb-6">Detail Kasus</p>
                     <x-input id="cases_total" name="cases_total" label="Total Kasus" type="number" :value="$tcases->cases_total"
                         required oninput="this.value = Math.abs(this.value)" />
-                    <p class="text-xs">Date</p>
-                    <!-- Tambahkan label atau teks "tahun-bulan-tanggal" terpisah di samping input tanggal -->
-                    <p class="text-xs">Tanggal tersimpan: <?php echo date('Y-F-d', strtotime($tcases->date)); ?></p>
-                    <div class="relative mb-4">
-                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                            <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor"
-                                viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd"
-                                    d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8 a1 1 0 100-2H6z"
-                                    clip-rule="evenodd"></path>
-                            </svg>
+                    <div>
+                        <p class="text-xs">Tanggal</p>
+                        <!-- Tambahkan label atau teks "tahun-bulan-tanggal" terpisah di samping input tanggal -->
+                        <p class="text-xs">Tanggal tersimpan: <?php echo date('Y-F-d', strtotime($tcases->date)); ?></p>
+                        <div class="relative mb-4">
+                            <?php
+                            $originalDate = $tcases->date; // Tanggal dalam format 'Y-m-d'
+                            $newDate = date('m/d/y', strtotime($originalDate)); // Mengubah format ke 'mm/dd/yy'
+                            ?>
+                            <input name="date" :value="$newDate" required id="date" type="date"
+                                class="border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-primary focus:border-primary block w-full py-2.5 px-3"
+                                placeholder="Pilih tanggal mulai" autocomplete="off">
                         </div>
-                        <?php
-                        $originalDate = $tcases->date; // Tanggal dalam format 'Y-m-d'
-                        $newDate = date('m/d/y', strtotime($originalDate)); // Mengubah format ke 'mm/dd/yy'
-                        ?>
-                        <input name="date" :value="$newDate" required id="date" type="date"
-                            class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full pl-10 p-3 mb-1.5"
-                            placeholder="Pilih tanggal mulai" autocomplete="off">
                     </div>
-
-
-
-
 
                     <x-select id="vector_type" label="Type Vector" :value="$tcases->vector_type" name="vector_type" isFit="true"
                         required>
@@ -156,7 +148,7 @@
                         icon: 'success',
                         title: 'Berhasil',
                         text: '{{ Session::get('
-                                        success ') }}',
+                                                                                                                                                                                        success ') }}',
                     })
                 @endif
 
@@ -165,7 +157,7 @@
                         icon: 'error',
                         title: 'Gagal',
                         text: '{{ Session::get('
-                                        error ') }}',
+                                                                                                                                                                                        error ') }}',
                     })
                 @endif
             });

@@ -49,7 +49,7 @@
         }
 
         #samplePerYear {
-            height: 300px !important;
+            height: 340px !important;
         }
     </style>
 

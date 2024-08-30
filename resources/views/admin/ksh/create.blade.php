@@ -6,14 +6,16 @@
             <div class="sm:grid grid-cols-2 gap-x-4">
                 <div>
                     <p class="text-sm font-semibold mb-6">Detail Sampling</p>
-                    <x-select id="regency_id" label="Kabupaten/Kota" name="regency_id" isFit="true" required>
-                        @foreach ($regencies as $regency)
-                            <option value="{{ $regency->id }}">{{ $regency->name }}</option>
-                        @endforeach
-                    </x-select>
-                    <x-select id="district_id" label="Kecamatan" name="district_id" isFit="true" required />
-                    <x-select id="village_id" label="Desa" name="village_id" isFit="true" required />
-                    <p class="text-sm" id="address"></p>
+                    <div class="space-y-6">
+                        <x-select id="regency_id" label="Kabupaten/Kota" name="regency_id" isFit="true" required>
+                            @foreach ($regencies as $regency)
+                                <option value="{{ $regency->id }}">{{ $regency->name }}</option>
+                            @endforeach
+                        </x-select>
+                        <x-select id="district_id" label="Kecamatan" name="district_id" isFit="true" required />
+                        <x-select id="village_id" label="Desa" name="village_id" isFit="true" required />
+                        <p class="text-xs" id="address"></p>
+                    </div>
                 </div>
                 <div>
                     <p class="text-sm font-semibold mb-6">Detail Koordinat</p>

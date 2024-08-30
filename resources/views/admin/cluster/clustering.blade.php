@@ -14,12 +14,12 @@
         </div>
     </x-card-container>
 
-    <x-card-container class="mb-4">
+    <x-card-container class="mb-4 hidden" id="jumlahKlasterContainer">
         <h2 class="font-semibold text-xs mb-8">Jumlah Klaster Terbentuk</h2>
         <div class="clusterContainer grid grid-cols-4 gap-6"></div>
     </x-card-container>
 
-    <x-card-container>
+    <x-card-container class="hidden" id="klasterContainer">
         <p class="text-xs font-semibold mb-8">Klaster</p>
         <div id="map" style="height: 400px;"></div>
     </x-card-container>
@@ -30,8 +30,70 @@
         <script>
             let listDistrict = [];
             let map = null;
+            let allClusters = {};
+            let offset = 0;
+            let isProcessing = false;
+
+            function pollClusterData(epsilon, minPoints) {
+                $.ajax({
+                    url: "{{ route('admin.cluster.filter') }}",
+                    type: "GET",
+                    data: {
+                        epsilon: epsilon,
+                        minPts: minPoints,
+                        offset: offset
+                    },
+                    success: function(response) {
+                        // Process the chunk of data
+                        processClusterChunk(response.cluster);
+
+                        if (response.isComplete) {
+                            // All data has been processed
+                            finalizeClustering();
+                        } else {
+                            // Continue polling for more data
+                            offset = response.offset;
+                            setTimeout(() => pollClusterData(epsilon, minPoints), 1000); // 1 second delay
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error processing chunk:", error);
+                        isProcessing = false;
+                    }
+                });
+            }
+
+            function processClusterChunk(clusterChunk) {
+                for (let key in clusterChunk) {
+                    if (!allClusters[key]) {
+                        allClusters[key] = [];
+                    }
+                    allClusters[key] = allClusters[key].concat(clusterChunk[key]);
+                }
+            }
+
+
+            function finalizeClustering() {
+                isProcessing = false;
+                setupClustering(Object.values(allClusters));
+
+                // change button text
+                $("#buttonDbscan").text("Klasterkan");
+                // enable button
+                $("#buttonDbscan").prop("disabled", false);
+
+                Swal.fire({
+                    icon: "success",
+                    title: "Klasterisasi",
+                    text: "Klasterisasi data berhasil dilakukan",
+                });
+            }
+
             async function setupClustering(data) {
-                // Remove the existing map container initialization
+                // Show the cluster container
+                $("#klasterContainer").removeClass("hidden");
+                $("#jumlahKlasterContainer").removeClass("hidden");
+
                 if (map) {
                     map.remove();
                 }
@@ -285,30 +347,53 @@
                         clusterContainer.appendChild(clusterCard);
                     });
                 });
+
+                // download image
+                const downloadButton = L.easyButton("fa-download", function() {
+                    const mapCanvas = document.querySelector(".leaflet-container");
+                    html2canvas(mapCanvas).then(function(canvas) {
+                        const link = document.createElement("a");
+                        link.download = "map.png";
+                        link.href = canvas.toDataURL("image/png");
+                        link.click();
+                    });
+                });
+
+                downloadButton.addTo(map);
             }
 
-            (async function() {
-                var data = @json($cluster);
-                await setupClustering(data);
-            })();
-
             $("#buttonDbscan").on("click", function() {
+                // hide cluster container
+                $("#klasterContainer").addClass("hidden");
+                $("#jumlahKlasterContainer").addClass("hidden");
+
+                $("#buttonDbscan").text("Sedang memproses data...");
+                // disable button
+                $("#buttonDbscan").prop("disabled", true);
+                Swal.fire({
+                    title: "Sedang memproses data...",
+                    html: "Mohon tunggu sebentar",
+                    timerProgressBar: true,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    },
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                });
+
                 let epsilon = $("#epsilon").val();
                 let minPoints = $("#minPoints").val();
-                $.ajax({
-                    url: "{{ route('admin.cluster.clustering') }}",
-                    type: "GET",
-                    data: {
-                        _token: "{{ csrf_token() }}",
-                        epsilon: epsilon,
-                        minPts: minPoints,
-                    },
-                    success: function(response) {
-                        listDistrict = [];
-                        $(".clusterContainer").empty();
-                        setupClustering(response);
-                    },
-                });
+
+                // Reset variables
+                allClusters = {};
+                offset = 0;
+                isProcessing = true;
+                listDistrict = [];
+                $(".clusterContainer").empty();
+
+                // Start the long polling process
+                pollClusterData(epsilon, minPoints);
             });
         </script>
     @endpush

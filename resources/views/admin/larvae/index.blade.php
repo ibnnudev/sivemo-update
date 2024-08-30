@@ -16,34 +16,14 @@
             </div>
             <div id="filterRange" class="items-center hidden">
                 <div date-rangepicker class="sm:flex sm:space-x-4 items-center">
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                            <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor"
-                                viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd"
-                                    d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
-                                    clip-rule="evenodd"></path>
-                            </svg>
-                        </div>
-                        <input name="startDate" type="text"
-                            class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full pl-10 p-3 mb-1.5"
-                            placeholder="Pilih tanggal mulai" autocomplete="off">
-                    </div>
-                    <span class="mx-4 text-gray-500 text-sm mb-2">sampai</span>
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                            <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor"
-                                viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd"
-                                    d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
-                                    clip-rule="evenodd"></path>
-                            </svg>
-                        </div>
-                        <input name="endDate" type="text"
-                            class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full pl-10 p-3 mb-1.5"
-                            placeholder="Pilih tanggal berakhir" autocomplete="off">
-                    </div>
-                    <x-link-button id="btnFilter" color="gray" class="py-2.5 mb-1.5">
+                    <input name="startDate" type="text"
+                        class="border border-gray-300 text-gray-900 sm:text-xs text-sm rounded-lg focus:ring-primary focus:border-primary block w-full px-3 py-2.5"
+                        placeholder="Pilih tanggal mulai" autocomplete="off">
+                    <span class="mx-4 text-gray-500 sm:text-xs text-sm">sampai</span>
+                    <input name="endDate" type="text"
+                        class="border border-gray-300 text-gray-900 sm:text-xs text-sm rounded-lg focus:ring-primary focus:border-primary block w-full px-3 py-2.5"
+                        placeholder="Pilih tanggal berakhir" autocomplete="off">
+                    <x-link-button id="btnFilter" color="gray" class="py-2.5">
                         Filter
                     </x-link-button>
                 </div>
@@ -171,7 +151,7 @@
                 });
 
                 let larvae = @json($larvae);
-                
+
 
                 // get center map
                 let centerCoordinate = [];
@@ -201,61 +181,56 @@
                 map.zoomControl.remove();
 
                 for (let i = 0; i < larvae.length; i++) {
+                    let detailContent = '';
+
+                    // Check if detail_larvaes is empty
+                    if (larvae[i].detail_larvaes.length === 0) {
+                        detailContent = '<p class="text-center">Tidak ada informasi detail / tidak lengkap</p>';
+                    } else {
+                        detailContent = `<ul class="list-none list-inside">`;
+                        larvae[i].detail_larvaes.map((detail) => {
+                            console.log(detail);
+                            detailContent += `<li><strong>Jenis TPA:</strong> ${detail.tpa_type.name}</li>`;
+                            detailContent += `<li><strong>Jml. Larva:</strong> ${detail.amount_larva}</li>`;
+                            detailContent += `<li><strong>Jml. Telur:</strong> ${detail.amount_egg}</li>`;
+                            detailContent +=
+                                `<li><strong>Larva Dewasa:</strong> ${detail.number_of_adults}</li>`;
+                            detailContent +=
+                                `<li><strong>Temp. Air:</strong> ${detail.water_temperature} °C</li>`;
+                            detailContent += `<li><strong>PH Air:</strong> ${detail.ph}</li>`;
+                            detailContent += `<li><strong>Salinitas:</strong> ${detail.salinity}</li>`;
+                            detailContent +=
+                                `<li><strong>Tumbuhan:</strong> ${detail.aquatic_plant == 'available' ? 'Ada' : 'Tidak Ada'} </li>`;
+                        });
+                        detailContent += `</ul>`;
+                    }
+
                     let marker = L.marker([larvae[i].latitude, larvae[i].longitude], {
                         icon: L.divIcon({
-                            // image
-                            html: `<img src="{{ asset('assets/images/larva-icon.png') }}" class="w-6 h-6">`,
+                            html: `<img src="{{ asset('assets/images/larvae/icon.jpg') }}" class="w-6 h-6">`,
                             className: 'text-white bg-transparent',
-                            iconAnchor: [15, 15],
-                            popupAnchor: [0, -15]
+                            iconAnchor: [12, 12], // Adjust these values to correctly position your icon
+                            popupAnchor: [0, -20] // Adjust the popup to appear above the icon
                         })
                     });
 
-                    marker.bindPopup(
-                        `<table class="table-sm">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>TPA</th>
-                                    <th>Larva</th>
-                                    <th>Telur</th>
-                                    <th>Nyamuk Dewasa</th>
-                                    <th>Suhu Air</th>
-                                    <th>Salinitas</th>
-                                    <th>PH</th>
-                                    <th>Tumbuhan Air</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ` +
-                        larvae[i].detail_larvaes.map((data, index) => {
-                            return `<tr>
-                                        <td>${index + 1}</td>
-                                        <td>${data.tpa_type.name}</td>
-                                        <td>${data.amount_larva}</td>
-                                        <td>${data.amount_egg}</td>
-                                        <td>${data.number_of_adults}</td>
-                                        <td>${data.water_temperature}</td>
-                                        <td>${data.salinity}</td>
-                                        <td>${data.ph}</td>
-                                        <td>${data.aquatic_plant == 'available' ? 'Ada' : 'Tidak Ada'}</td>
-                                    </tr>`
-                        }).join('') +
-                        `</tbody>
-                        </table>`
-                        // adjust width popup
-                    ).on('popupopen', function() {
-                        $('.leaflet-popup-content').width('auto');
+                    marker.bindPopup(detailContent).on('popupopen', function() {
+                        $('.leaflet-popup-content').width('w-96');
                     });
 
-                    // on click pan to marker
+                    // Show popup on hover
+                    marker.on('mouseover', function() {
+                        marker.openPopup();
+                    });
+
+                    // Zoom to marker when clicked
                     marker.on('click', function() {
-                        map.setZoom(15);
-                        map.panTo(marker.getLatLng());
+                        map.setView([larvae[i].latitude, larvae[i].longitude], 15);
                     });
 
                     markers.addLayer(marker);
                 }
+
 
                 map.addLayer(markers);
 
