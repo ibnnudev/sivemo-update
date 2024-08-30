@@ -39,7 +39,7 @@
             </x-sidebar-dropdown>
 
             {{-- Master Outdoor --}}
-            <x-sidebar-dropdown title="Outdoor Breeding Site" icon="fas fa-file-circle-check" toggle="outdoor-bs"
+            <x-sidebar-dropdown title="Outdoor Breeding Site" icon="fa-solid fa-tarp-droplet" toggle="outdoor-bs"
                 active="{{ request()->routeIs('admin.outdoor-breeding.*') }}">
                 
                 <x-sidebar-item title="Artificial " route="{{ route('admin.outdoor-breeding.artificial_index') }}"
