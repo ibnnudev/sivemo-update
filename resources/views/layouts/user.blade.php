@@ -140,7 +140,7 @@
                         <ul class="flex flex-col mt-4 lg:flex-row lg:space-x-8 lg:mt-0">
                             <li>
                                 <a href="/"
-                                    class="block py-2 pr-4 pl-3 {{ request()->routeIs('user.index') ? 'text-primary font-medium' : 'text-gray-700' }} rounded bg-primary-700 lg:bg-transparent lg:text-primary-700 lg:p-0 text-sm">Beranda</a>
+                                    class="block py-2 pr-4 pl-3 {{ request()->routeIs('user.index') ? 'text-primary font-medium' : 'text-gray-700' }} rounded bg-primary-700 lg:bg-transparent lg:text-primary-700 lg:p-0 text-sm">Home</a>
                             </li>
                             <li>
                                 <a href="{{ route('user.vector') }}"
