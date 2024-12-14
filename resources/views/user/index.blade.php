@@ -4,10 +4,11 @@
         <div class="grid max-w-screen-xl py-7 mx-auto lg:gap-8 xl:gap-14 lg:py-16 lg:grid-cols-12">
             <div class="mr-auto place-self-center lg:col-span-6">
                 <h1
-                    class="max-w-2xl mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-4xl xl:text-5xl dark:text-white">
+                    class="max-w-2xl mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-4xl xl:text-6xl dark:text-white">
                     <span
-                        class="text-transparent bg-clip-text bg-gradient-to-r to-purple-500 from-purple-700">System</span>
-                    <br>Monitoring Vector
+                        class="text-transparent bg-clip-text bg-gradient-to-r to-purple-500 from-purple-700">Peta</span>
+                    <br>Pantau Vector
+
                 </h1>
                 <p class="max-w-2xl mb-6 text-gray-500 lg:mb-8 md:text-sm lg:text-md dark:text-gray-400">
                     Collecting data from various sources and displaying it in a single dashboard is a challenge. We are
