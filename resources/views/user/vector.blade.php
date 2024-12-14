@@ -161,13 +161,15 @@
             let lastSample = samples[samples.length - 1];
             let map = L.map('map').setView([lastSample.latitude, lastSample.longitude], 14);
 
+            const MAPBOX_ACCESS_TOKEN = "{{ config('app.mapbox_token') }}";
+
             L.tileLayer(
                 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
                     maxZoom: 18,
                     id: 'mapbox/light-v11',
                     tileSize: 512,
                     zoomOffset: -1,
-                    accessToken: '{{ env('MAPBOX_TOKEN') }}',
+                    accessToken: MAPBOX_ACCESS_TOKEN
                 }
             ).addTo(map);
 

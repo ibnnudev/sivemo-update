@@ -177,6 +177,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     Route::resource('abj', AbjController::class, ['as' => 'admin'])->only(['index']);
 
     // User
+    Route::get('get-image/{filename}', [UserController::class, 'getImage'])->name('admin.user.get-image');
     Route::post('user/{id}/update-user-account', [UserController::class, 'updateUserAccount'])->name('admin.user.update-user-account');
     Route::post('user/update-profile-picture', [UserController::class, 'updateProfilePicture'])->name('admin.user.update-profile-picture');
     Route::resource('user', UserController::class, ['as' => 'admin']);

@@ -121,6 +121,8 @@
 
             var markers = L.markerClusterGroup();
 
+            const MAPBOX_ACCESS_TOKEN = "{{ config('app.mapbox_token') }}";
+
             L.tileLayer(
                 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
                     attribution: '&copy; <a href="https://www.mapbox.com/">Mapbox</a> &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
@@ -128,7 +130,7 @@
                     id: 'mapbox/light-v11',
                     tileSize: 512,
                     zoomOffset: -1,
-                    accessToken: '{{ env('MAPBOX_TOKEN') }}',
+                    accessToken: MAPBOX_ACCESS_TOKEN,
                     attribution: '',
                     detectRetina: true,
                 }
@@ -547,7 +549,7 @@
                                     updateChart(samplePerYear);
                                 } else {
                                     emptyChart();
-                                    // 
+                                    //
                                 }
                             }
                         });

@@ -191,6 +191,7 @@ class SampleImport implements ToModel, WithChunkReading, WithMultipleSheets, Wit
                 ]);
             }
 
+            // insert aedes aegypti
             if ($aedesAegypti != 0) {
                 $detailSampleVirus = DetailSampleVirus::create([
                     'sample_id' => $sample->id,

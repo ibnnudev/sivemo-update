@@ -59,11 +59,6 @@
                                     class="flex items-center text-sm font-medium text-gray-900 hover:text-purple-600 dark:hover:text-purple-500 md:mr-0"
                                     type="button">
                                     <span class="sr-only">Open user menu</span>
-                                    {{-- <img class="w-8 h-8 mr-2 rounded-full"
-                                        src="{{ auth()->user()->profile_pictu
-                                            ? asset('storage/profile-picture/' . auth()->user()->profile_picture)
-                                            : asset('assets/images/noimage.jpg') }}"
-                                        alt="user photo"> --}}
                                     {{ auth()->user()->name }}
                                     <svg class="w-4 h-4 mx-1.5" aria-hidden="true" fill="currentColor"
                                         viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">

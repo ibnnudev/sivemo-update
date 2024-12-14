@@ -87,6 +87,7 @@
             }
 
             $(function() {
+                const MAPBOX_ACCESS_TOKEN = "{{ config('app.mapbox_token') }}";
                 let map = L.map("map").setView([latitude, longitude], 13);
 
                 L.tileLayer(
@@ -96,7 +97,7 @@
                         id: 'mapbox/light-v11',
                         tileSize: 512,
                         zoomOffset: -1,
-                        accessToken: '{{ env('MAPBOX_TOKEN') }}',
+                        accessToken: MAPBOX_ACCESS_TOKEN
                     }
                 ).addTo(map);
 
