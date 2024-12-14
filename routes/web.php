@@ -113,10 +113,10 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
         Route::get('virus/list', [VirusController::class, 'list'])->name('admin.virus.list');
         Route::resource('virus', VirusController::class, ['as' => 'admin']);
 
-        // 
-        Route::group(['prefix'=>'outdoor-breeding','as'=>'admin.outdoor-breeding.'],function(){
-            Route::get('artificial',[OutdoorBreedingSite::class,'artificial_index'])->name('artificial_index');
-            Route::get('natural',[OutdoorBreedingSite::class,'natural_index'])->name('natural_index');
+        //
+        Route::group(['prefix' => 'outdoor-breeding', 'as' => 'admin.outdoor-breeding.'], function () {
+            Route::get('artificial', [OutdoorBreedingSite::class, 'artificial_index'])->name('artificial_index');
+            Route::get('natural', [OutdoorBreedingSite::class, 'natural_index'])->name('natural_index');
         });
 
         // Morphotype
@@ -182,10 +182,6 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     Route::resource('user', UserController::class, ['as' => 'admin']);
 
     // Tcases
-    Route::get('tcases', [TCasesController::class, 'index'])->name('admin.tcases.index');
-    Route::get('tcases/create', [TCasesController::class, 'create'])->name('admin.tcases.create');
-    Route::post('tcases/store', [TCasesController::class, 'store'])->name('admin.tcases.store');
-    Route::get('tcases/{id}/edit', [TCasesController::class, 'edit'])->name('admin.tcases.edit');
     Route::post('tcases/importexcel', [TCasesController::class, 'importexcel'])->name('admin.tcases.importexcel');
     Route::resource('tcases', TCasesController::class, ['as' => 'admin']);
 
