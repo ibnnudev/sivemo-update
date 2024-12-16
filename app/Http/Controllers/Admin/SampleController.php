@@ -312,7 +312,7 @@ class SampleController extends Controller
             $filename = $fileCode . '.' . $request->file('import_file')->getClientOriginalExtension();
             // $request->file('import_file')->storeAs('sample-imported', $filename);
 
-            Storage::putFileAs('sample-imported', $request->file('import_file'), $filename);
+            Storage::putFileAs('/public/sample-imported', $request->file('import_file'), $filename);
 
             return redirect()->route('admin.sample.index')->with('success', 'Data berhasil diimport.');
         } catch (ValidationException $th) {

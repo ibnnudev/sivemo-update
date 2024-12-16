@@ -10,7 +10,6 @@ use App\Models\LocationType;
 use App\Models\Province;
 use App\Models\Regency;
 use App\Models\Sample;
-// use App\Models\SampleMethod;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithChunkReading;

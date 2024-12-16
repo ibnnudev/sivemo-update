@@ -94,15 +94,15 @@ class UserController extends Controller
             $oldProfilePicture = $user->profile_picture;
 
             if ($oldProfilePicture != null) {
-                $oldProfilePicturePath = public_path('storage/profile-picture' . $oldProfilePicture);
+                $oldProfilePicturePath = public_path('storage/public/profile-picture' . $oldProfilePicture);
                 if (file_exists($oldProfilePicturePath)) {
                     unlink($oldProfilePicturePath);
                 }
             }
 
             $filename = uniqid() . '.' . $request->profile_picture->extension();
-            // $request->profile_picture->storeAs('profile-picture', $filename);
-            Storage::putFileAs('profile-picture', $request->profile_picture, $filename);
+            // $request->profile_picture->storeAs('public/profile-picture', $filename);
+            Storage::putFileAs('public/profile-picture', $request->profile_picture, $filename);
 
             $user->profile_picture = $filename;
 
@@ -164,7 +164,7 @@ class UserController extends Controller
 
     public function getImage($filename)
     {
-        $path = Storage::path('profile-picture/' . $filename);
+        $path = Storage::path('public/profile-picture/' . $filename);
         return response()->file($path);
     }
 }
