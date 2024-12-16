@@ -136,12 +136,12 @@ class TCasesController extends Controller
         $nama_file = $data->getClientOriginalName();
         $data->move('TcasesData', $nama_file);
 
-        Excel::import(new TcasesImport, \public_path('/TcasesData/' . $nama_file));
+        Excel::import(new TcasesImport, public_path('/TcasesData/' . $nama_file));
 
         // Setelah impor selesai, hapus file Excel
-        unlink(\public_path('/TcasesData/' . $nama_file));
+        unlink(public_path('/TcasesData/' . $nama_file));
 
-        return \redirect()->back();
+        return redirect()->back();
     }
 
     public function destroy(string $id)
