@@ -308,7 +308,7 @@ class SampleController extends Controller
 
         try {
             $fileCode = uniqid();
-            Excel::import(new SampleImport($fileCode), $request->file('import_file'));
+            Excel::import(new SampleImport($fileCode), $request->file('import_file'), 'public');
             $filename = $fileCode . '.' . $request->file('import_file')->getClientOriginalExtension();
             // $request->file('import_file')->storeAs('sample-imported', $filename);
 
