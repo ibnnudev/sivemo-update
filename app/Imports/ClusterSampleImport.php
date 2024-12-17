@@ -69,8 +69,13 @@ class ClusterSampleImport implements ToModel, WithStartRow, WithValidation, With
     public function model(array $row)
     {
         $date = null;
-        if (isset($row[0])) {
+        if (isset($row[0]) && is_numeric($row[0])) {
+            // Konversi tanggal hanya jika tipe data sesuai
             $date = Date::excelToDateTimeObject($row[0]);
+            $formattedDate = $date->format('Y-m-d');
+            echo $formattedDate;
+        } else {
+            echo "Data tidak valid untuk konversi tanggal: {$row[0]}";
         }
 
         // jika data sudah tidak ada maka tidak perlu diimport
