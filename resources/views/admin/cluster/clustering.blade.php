@@ -26,7 +26,7 @@
 
     @push('js-internal')
         <script src="https://unpkg.com/leaflet-fullscreen/dist/Leaflet.fullscreen.js"></script>
-        <script src="{{ asset('assets/js/dbscanclustering.js') }}"></script>
+        {{-- <script src="{{ asset('assets/js/dbscanclustering.js') }}"></script> --}}
         <script>
             let listDistrict = [];
             let map = null;

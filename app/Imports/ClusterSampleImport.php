@@ -25,30 +25,30 @@ class ClusterSampleImport implements ToModel, WithStartRow, WithValidation, With
     public function rules(): array
     {
         return [
-            'date' => 'nullable',
-            'province' => 'nullable',
-            'regency' => 'nullable',
-            'district' => 'nullable',
-            'village' => 'nullable',
-            'location_type' => 'nullable',
-            'location_name' => 'nullable',
-            'latitude' => 'nullable',
-            'longitude' => 'nullable',
-            'aedes_aegypti' => 'nullable',
+            'date'             => 'nullable',
+            'province'         => 'nullable',
+            'regency'          => 'nullable',
+            'district'         => 'nullable',
+            'village'          => 'nullable',
+            'location_type'    => 'nullable',
+            'location_name'    => 'nullable',
+            'latitude'         => 'nullable',
+            'longitude'        => 'nullable',
+            'aedes_aegypti'    => 'nullable',
             'aedes_albopictus' => 'nullable',
-            'culex' => 'nullable',
-            'morphotype_1' => 'nullable',
-            'morphotype_2' => 'nullable',
-            'morphotype_3' => 'nullable',
-            'morphotype_4' => 'nullable',
-            'morphotype_5' => 'nullable',
-            'morphotype_6' => 'nullable',
-            'morphotype_7' => 'nullable',
-            'morphotype_8' => 'nullable',
-            'denv_1' => 'nullable',
-            'denv_2' => 'nullable',
-            'denv_3' => 'nullable',
-            'denv_4' => 'nullable',
+            'culex'            => 'nullable',
+            'morphotype_1'     => 'nullable',
+            'morphotype_2'     => 'nullable',
+            'morphotype_3'     => 'nullable',
+            'morphotype_4'     => 'nullable',
+            'morphotype_5'     => 'nullable',
+            'morphotype_6'     => 'nullable',
+            'morphotype_7'     => 'nullable',
+            'morphotype_8'     => 'nullable',
+            'denv_1'           => 'nullable',
+            'denv_2'           => 'nullable',
+            'denv_3'           => 'nullable',
+            'denv_4'           => 'nullable',
         ];
     }
 
@@ -71,7 +71,7 @@ class ClusterSampleImport implements ToModel, WithStartRow, WithValidation, With
         $date = null;
         if (isset($row[0]) && is_numeric($row[0])) {
             // Konversi tanggal hanya jika tipe data sesuai
-            $date = Date::excelToDateTimeObject($row[0]);
+            $date          = Date::excelToDateTimeObject($row[0]);
             $formattedDate = $date->format('Y-m-d');
             echo $formattedDate;
         } else {
@@ -88,32 +88,31 @@ class ClusterSampleImport implements ToModel, WithStartRow, WithValidation, With
             $sampleCode = 'SPL-' . $date->format('dmy');
         }
 
-
         return new Cluster([
-            'sample_code' => $sampleCode,
-            'date' => $date,
-            'province' => 'Surabaya', // TODO: lengkapi dataset terlebih dahulu
-            'regency' => null, // TODO: lengkapi dataset terlebih dahulu
-            'district' => $row[1],
-            'village' => $row[2],
-            'location_type' => $row[3],
-            'location_name' => $row[4],
-            'latitude' => $row[5],
-            'longitude' => $row[6],
-            'aedes_aegypti' => $this->sumColumnValue($row, 7),
-            'aedes_albopictus' => $this->sumColumnValue($row, 8),
-            'culex' => $this->sumColumnValue($row, 9),
-            'morphotype_1' => $this->sumColumnValue($row, 10),
-            'morphotype_2' => $this->sumColumnValue($row, 11),
-            'morphotype_3' => $this->sumColumnValue($row, 12),
-            'morphotype_4' => $this->sumColumnValue($row, 13),
-            'morphotype_5' => $this->sumColumnValue($row, 14),
-            'morphotype_6' => $this->sumColumnValue($row, 15),
-            'morphotype_7' => $this->sumColumnValue($row, 16),
-            'denv_1' => $row[17] == '0' ? null : 1,
-            'denv_2' => $row[18] == '0' ? null : 1,
-            'denv_3' => $row[19] == '0' ? null : 1,
-            'denv_4' => $row[20] == '0' ? null : 1,
+            'sample_code'      => $sampleCode,
+            'date'             => $date,
+            'province'         => strtoupper($row[1]) ?? "JAWA TIMUR",   // TODO: lengkapi dataset terlebih dahulu
+            'regency'          => $row[2] ?? "Surabaya",                 // TODO: lengkapi dataset terlebih dahulu
+            'district'         => $row[3],
+            'village'          => $row[4],
+            'location_type'    => $row[5],
+            'location_name'    => $row[6],
+            'latitude'         => $row[8],
+            'longitude'        => $row[9],
+            'aedes_aegypti'    => $this->sumColumnValue($row, 10),
+            'aedes_albopictus' => $this->sumColumnValue($row, 11),
+            'culex'            => $this->sumColumnValue($row, 12),
+            'morphotype_1'     => $this->sumColumnValue($row, 13),
+            'morphotype_2'     => $this->sumColumnValue($row, 14),
+            'morphotype_3'     => $this->sumColumnValue($row, 15),
+            'morphotype_4'     => $this->sumColumnValue($row, 16),
+            'morphotype_5'     => $this->sumColumnValue($row, 17),
+            'morphotype_6'     => $this->sumColumnValue($row, 18),
+            'morphotype_7'     => $this->sumColumnValue($row, 19),
+            'denv_1'           => $row[20] == '0' ? null : 1,
+            'denv_2'           => $row[21] == '0' ? null : 1,
+            'denv_3'           => $row[22] == '0' ? null : 1,
+            'denv_4'           => $row[23] == '0' ? null : 1,
         ]);
     }
 }

@@ -129,6 +129,7 @@ class ClusteringController extends Controller
             $limit = 500; // Process 1000 items per request
 
             $dataset = Cluster::skip($offset)->take($limit)->get();
+
             $datasetArray = $dataset->map(function ($item) {
                 return [
                     $item->latitude,
