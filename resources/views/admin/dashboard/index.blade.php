@@ -66,6 +66,21 @@
                 </div>
             </div>
         </div>
+
+        <x-card-container class="mb-6">
+            <h2 class="font-semibold text-xs mb-8">Sesuaikan Klaster</h2>
+            <div class="flex items-end gap-4">
+                <x-input id="epsilon" label="Epsilon" name="epsilon" type="number" value="0.002839" required />
+                <x-input id="minPoints" label="Min Points" name="minPoints" type="number" value="1" required />
+                <x-button type="submit" class="bg-primary mb-4" id="buttonDbscan">Klasterkan</x-button>
+            </div>
+        </x-card-container>
+
+        {{-- <x-card-container class="mb-4 hidden" id="jumlahKlasterContainer">
+            <h2 class="font-semibold text-xs mb-8">Jumlah Klaster Terbentuk</h2>
+            <div class="clusterContainer grid grid-cols-4 gap-6"></div>
+        </x-card-container> --}}
+
         <x-card-container>
             <div class="flex justify-between items-center">
                 <div>
@@ -375,6 +390,272 @@
                 map.addLayer(markers);
             @endif
 
+            let listDistrict = [];
+            let allClusters = {};
+            let offset = 0;
+            let isProcessing = false;
+
+            // Namespace to encapsulate global variables
+            const clusteringData = {
+                allClusters: {},
+                offset: 0,
+                isProcessing: false,
+                listDistrict: []
+            };
+
+            function pollClusterData(epsilon, minPoints) {
+                $.ajax({
+                    url: "{{ route('admin.cluster.filter') }}",
+                    type: "GET",
+                    data: {
+                        epsilon: epsilon,
+                        minPts: minPoints,
+                        offset: clusteringData.offset
+                    },
+                    success: function(response) {
+                        processClusterChunk(response.cluster);
+
+                        if (response.isComplete) {
+                            finalizeClustering();
+                        } else {
+                            clusteringData.offset = response.offset;
+                            setTimeout(() => pollClusterData(epsilon, minPoints), 1000); // 1 second delay
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error processing chunk:", error);
+                        clusteringData.isProcessing = false;
+                        Swal.fire({
+                            icon: "error",
+                            title: "Error",
+                            text: "Gagal memproses data. Coba lagi nanti."
+                        });
+                    }
+                });
+            }
+
+            function processClusterChunk(clusterChunk) {
+                for (let key in clusterChunk) {
+                    if (!clusteringData.allClusters[key]) {
+                        clusteringData.allClusters[key] = [];
+                    }
+                    clusteringData.allClusters[key] = clusteringData.allClusters[key].concat(clusterChunk[key]);
+                }
+            }
+
+            function finalizeClustering() {
+                clusteringData.isProcessing = false;
+                setupClustering(Object.values(clusteringData.allClusters));
+
+                // Update UI
+                $("#buttonDbscan").text("Klasterkan").prop("disabled", false);
+                Swal.fire({
+                    icon: "success",
+                    title: "Klasterisasi",
+                    text: "Klasterisasi data berhasil dilakukan",
+                });
+            }
+
+            async function setupClustering(data) {
+                // $("#jumlahKlasterContainer").removeClass("hidden");
+
+                let colorMap = {};
+                const generateColor = () => `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+
+                data.forEach((clusterItems, index) => {
+                    clusteringData.listDistrict.push(clusterItems.map(item => item));
+
+                    let clusterCenter = clusterItems.reduce((acc, item) => {
+                        acc.lat += parseFloat(item.latitude);
+                        acc.lon += parseFloat(item.longitude);
+                        return acc;
+                    }, {
+                        lat: 0,
+                        lon: 0
+                    });
+
+                    clusterCenter.lat /= clusterItems.length;
+                    clusterCenter.lon /= clusterItems.length;
+
+                    clusterItems.forEach(item => {
+                        const clusterColor = colorMap[item.cluster] || (colorMap[item.cluster] =
+                            generateColor());
+
+                        let markerIcon = L.divIcon({
+                            className: "custom-div-icon",
+                            html: `<div style="background-color: ${clusterColor}; width: 10px; height: 10px; border-radius: 50%;"></div>`
+                        });
+
+                        L.marker([item.latitude, item.longitude], {
+                                icon: markerIcon
+                            })
+                            .addTo(map)
+                            .bindPopup(generatePopupContent(item));
+                    });
+
+                    // Add circle for each cluster center
+                    const clusterColor = colorMap[index];
+                    L.circle([clusterCenter.lat, clusterCenter.lon], {
+                            radius: 400,
+                            color: clusterColor,
+                            fill: true,
+                            fillOpacity: 0.1,
+                            weight: 2
+                        })
+                        .addTo(map)
+                        .on("click", function() {
+                            // Calculate data for popup
+                            let clusterCount = clusterItems.length;
+                            let totalDENV = 0;
+                            let totalDENV1 = 0;
+                            let totalDENV2 = 0;
+                            let totalDENV3 = 0;
+                            let totalDENV4 = 0;
+                            let totalMorphotype = 0;
+                            let listOfDistric = [];
+
+                            clusterItems.forEach((i) => {
+                                listOfDistric.push(i.district ?? "-");
+                                totalDENV += i.denv_1 + i.denv_2 + i.denv_3 + i.denv_4;
+                                totalDENV1 += i.denv_1;
+                                totalDENV2 += i.denv_2;
+                                totalDENV3 += i.denv_3;
+                                totalDENV4 += i.denv_4;
+                                totalMorphotype +=
+                                    i.morphotype_1 +
+                                    i.morphotype_2 +
+                                    i.morphotype_3 +
+                                    i.morphotype_4 +
+                                    i.morphotype_5 +
+                                    i.morphotype_6 +
+                                    i.morphotype_7;
+                            });
+
+                            // Generate popup content
+                            let table = `<table class="table-auto">
+                <tbody>
+                    <tr>
+                        <td class="border font-semibold px-2">Nomor Cluster</td>
+                        <td class="border">${index + 1}</td>
+                    </tr>
+                    <tr>
+                        <td class="border font-semibold px-2">Jumlah Data</td>
+                        <td class="border">${clusterCount}</td>
+                    </tr>
+                    <tr>
+                        <td class="border font-semibold px-2">Jumlah DENV 1</td>
+                        <td class="border">${totalDENV1 ?? "-"}</td>
+                    </tr>
+                    <tr>
+                        <td class="border font-semibold px-2">Jumlah DENV 2</td>
+                        <td class="border">${totalDENV2 ?? "-"}</td>
+                    </tr>
+                    <tr>
+                        <td class="border font-semibold px-2">Jumlah DENV 3</td>
+                        <td class="border">${totalDENV3 ?? "-"}</td>
+                    </tr>
+                    <tr>
+                        <td class="border font-semibold px-2">Jumlah DENV 4</td>
+                        <td class="border">${totalDENV4 ?? "-"}</td>
+                    </tr>
+                    <tr>
+                        <td class="border font-semibold px-2">Jumlah DENV</td>
+                        <td class="border">${totalDENV ?? "-"}</td>
+                    </tr>
+                    <tr>
+                        <td class="border font-semibold px-2">Jumlah Morfotipe</td>
+                        <td class="border">${totalMorphotype ?? "-"}</td>
+                    </tr>
+                    <tr>
+                        <td class="border font-semibold px-2">Lokasi</td>
+                        <td class="border">${
+                            [...new Set(listOfDistric)].join(", ") ?? "-"
+                        }</td>
+                    </tr>
+                </tbody>
+            </table>`;
+
+                            L.popup()
+                                .setLatLng([clusterCenter.lat, clusterCenter.lon])
+                                .setContent(table)
+                                .openOn(map);
+                        });
+                });
+            }
+
+
+            function generatePopupContent(item) {
+                return `
+                <table class="table-auto">
+                    <tbody>
+                        <tr><td class="font-semibold px-2">Lokasi</td><td>${item.location_name}</td></tr>
+                        <tr><td class="font-semibold px-2">Jenis Lokasi</td><td>${item.location_type}</td></tr>
+                        <tr><td class="font-semibold px-2">Koordinat</td><td>${item.latitude} | ${item.longitude}</td></tr>
+                        <tr><td class="font-semibold px-2">Morfotipe</td><td>${generateMorphotypeList(item)}</td></tr>
+                        <tr><td class="font-semibold px-2">DENV</td><td>${generateDenvList(item)}</td></tr>
+                    </tbody>
+                </table>`;
+            }
+
+            function generateMorphotypeList(item) {
+                return [
+                    `Morf. 1: ${item.morphotype_1}`,
+                    `Morf. 2: ${item.morphotype_2}`,
+                    `Morf. 3: ${item.morphotype_3}`,
+                    `Morf. 4: ${item.morphotype_4}`,
+                    `Morf. 5: ${item.morphotype_5}`,
+                    `Morf. 6: ${item.morphotype_6}`,
+                    `Morf. 7: ${item.morphotype_7}`
+                ].join('<br>');
+            }
+
+            function generateDenvList(item) {
+                return [
+                    `DENV. 1: ${item.denv_1 ?? "-"}`,
+                    `DENV. 2: ${item.denv_2 ?? "-"}`,
+                    `DENV. 3: ${item.denv_3 ?? "-"}`,
+                    `DENV. 4: ${item.denv_4 ?? "-"}`
+                ].join('<br>');
+            }
+
+            $("#buttonDbscan").on("click", function() {
+                // Reset UI
+                $("#klasterContainer").addClass("hidden");
+                // $("#jumlahKlasterContainer").addClass("hidden");
+                $("#buttonDbscan").text("Sedang memproses data...").prop("disabled", true);
+
+                Swal.fire({
+                    title: "Sedang memproses data...",
+                    html: "Mohon tunggu sebentar",
+                    timerProgressBar: true,
+                    didOpen: () => Swal.showLoading(),
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    allowEscapeKey: false
+                });
+
+                const epsilon = parseFloat($("#epsilon").val()) || 0;
+                const minPoints = parseInt($("#minPoints").val()) || 1;
+
+                if (epsilon <= 0 || minPoints <= 0) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Input Tidak Valid",
+                        text: "Pastikan nilai epsilon dan minimum poin lebih besar dari 0."
+                    });
+                    return;
+                }
+
+                // Reset variables
+                clusteringData.allClusters = {};
+                clusteringData.offset = 0;
+                clusteringData.isProcessing = true;
+                clusteringData.listDistrict = [];
+                $(".clusterContainer").empty();
+
+                pollClusterData(epsilon, minPoints);
+            });
+
             // full screen
             L.control.fullscreen().addTo(map);
         </script>
@@ -563,7 +844,6 @@
                 }
             });
         </script>
-
 
         <script>
             $(function() {
