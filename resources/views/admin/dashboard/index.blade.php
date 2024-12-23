@@ -67,8 +67,12 @@
             </div>
         </div>
 
-        <x-card-container class="mb-6">
-            <h2 class="font-semibold text-xs mb-8">Sesuaikan Klaster</h2>
+        <x-card-container class="mb-6 text-sm">
+            <h2 class="font-semibold mb-1">Sesuaikan Klaster</h2>
+            <p class="mb-8 text-gray-500">Hasil klaster terlihat pada peta diatas. Anda dapat menyesuaikan klaster
+                dengan mengubah
+                nilai epsilon
+                dan min points.</p>
             <div class="flex items-end gap-4">
                 <x-input id="epsilon" label="Epsilon" name="epsilon" type="number" value="0.002839" required />
                 <x-input id="minPoints" label="Min Points" name="minPoints" type="number" value="1" required />
@@ -658,6 +662,11 @@
 
             // full screen
             L.control.fullscreen().addTo(map);
+
+            // automatically push buttonDbScan after page loaded
+            $(document).ready(function() {
+                $("#buttonDbscan").click();
+            });
         </script>
 
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
