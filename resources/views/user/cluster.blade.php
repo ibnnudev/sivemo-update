@@ -404,6 +404,20 @@
                         offset: clusteringData.offset
                     },
                     success: function(response) {
+                        // remove previous circle
+                        map.eachLayer(function(layer) {
+                            if (layer instanceof L.Circle) {
+                                map.removeLayer(layer);
+                            }
+                        });
+
+                        // remove previous marker
+                        map.eachLayer(function(layer) {
+                            if (layer instanceof L.Marker) {
+                                map.removeLayer(layer);
+                            }
+                        });
+
                         processClusterChunk(response.cluster);
 
                         if (response.isComplete) {
@@ -454,6 +468,9 @@
 
                 let colorMap = {};
                 const generateColor = () => `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+                // avoid red color
+                colorMap[0] = "#000000";
+
 
                 data.forEach((clusterItems, index) => {
                     clusteringData.listDistrict.push(clusterItems.map(item => item));
