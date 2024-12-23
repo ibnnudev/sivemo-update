@@ -74,7 +74,8 @@
                 nilai epsilon
                 dan min points.</p>
             <div class="flex items-end gap-4">
-                <x-input id="epsilon" label="Epsilon" name="epsilon" type="number" value="0.002839" required />
+                {{-- <x-input id="epsilon" label="Epsilon" name="epsilon" type="number" value="0.002839" required /> --}}
+                <x-input id="epsilon" label="Epsilon" name="epsilon" type="number" value="0.00118" required />
                 <x-input id="minPoints" label="Min Points" name="minPoints" type="number" value="1" required />
                 <x-button type="submit" class="bg-primary mb-4" id="buttonDbscan">Klasterkan</x-button>
             </div>

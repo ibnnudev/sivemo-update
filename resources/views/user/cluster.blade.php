@@ -32,7 +32,8 @@
                             nilai epsilon
                             dan min points.</p>
                         <div class="flex items-end gap-4">
-                            <x-input id="epsilon" label="Epsilon" name="epsilon" type="number" value="0.002839"
+                            {{-- <x-input id="epsilon" label="Epsilon" name="epsilon" type="number" value="0.002839" --}}
+                            <x-input id="epsilon" label="Epsilon" name="epsilon" type="number" value="0.00118"
                                 required />
                             <x-input id="minPoints" label="Min Points" name="minPoints" type="number" value="1"
                                 required />
