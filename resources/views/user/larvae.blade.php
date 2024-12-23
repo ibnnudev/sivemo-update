@@ -2,7 +2,7 @@
 
     <main class="pt-8 pb-16 lg:pt-16 lg:pb-24 bg-white dark:bg-gray-900">
         <div class="flex justify-between px-4 mx-auto max-w-screen-xl ">
-            <article class="mx-auto w-full max-w-3xl format format-sm sm:format-base lg:format-lg">
+            <article class="mx-auto w-full max-w-5xl format format-sm sm:format-base lg:format-lg">
                 <div class="text-sm">
                     <div class="text-sm">
                         <div class="xl:grid grid-cols-3 items-center">

@@ -25,21 +25,21 @@ use App\Http\Controllers\Admin\VillageController;
 use App\Http\Controllers\Admin\VirusController;
 use App\Http\Controllers\ClusteringController;
 use App\Http\Controllers\User\AuthController;
+use App\Http\Controllers\User\ClusteringController as UserClusteringController;
 use App\Http\Controllers\User\HomeController;
 use App\Http\Controllers\User\LarvaeController as UserLarvaeController;
 use App\Http\Controllers\User\VectorController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
+Route::group(['prefix' => 'clustering', 'as' => 'user.clustering.'], function () {
+    Route::get('/', [UserClusteringController::class, 'index'])->name('index');
+    Route::get('get-initial-data', [UserClusteringController::class, 'getInitialData'])->name('get-initial-data');
+    Route::get('clustering', [UserClusteringController::class, 'clustering'])->name('clustering');
+    Route::get('distance', [UserClusteringController::class, 'distance'])->name('distance');
+    Route::get('filter', [UserClusteringController::class, 'filter'])->name('filter');
+    Route::get('filter-chart-sample-per-year', [UserClusteringController::class, 'filterChartSamplePerYear'])->name('filter-chart-sample-per-year');
+    Route::get('get-sample-and-abj-by-district', [UserClusteringController::class, 'getSampleAndAbjByDistrict'])->name('get-sample-and-abj-by-district');
+});
 
 Route::get('ksh', [HomeController::class, 'ksh'])->name('user.ksh');
 
