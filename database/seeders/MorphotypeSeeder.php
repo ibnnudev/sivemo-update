@@ -20,6 +20,7 @@ class MorphotypeSeeder extends Seeder
             ['name' => 'Morfotipe 5'],
             ['name' => 'Morfotipe 6'],
             ['name' => 'Morfotipe 7'],
+            ['name' => 'Unidentified']
         ];
 
         Morphotype::insert($morphotypes);
