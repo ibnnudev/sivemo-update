@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -14,13 +13,12 @@ return new class extends Migration
         Schema::create('samples', function (Blueprint $table) {
             $table->id();
             $table->string('sample_code')->unique();
-            // $table->foreignId('sample_method_id')->nullable()->constrained('sample_methods');
             $table->string('latitude');
             $table->string('longitude');
-            $table->char('province_id')->nullable();
-            $table->char('regency_id')->nullable();
-            $table->char('district_id')->nullable();
-            $table->char('village_id')->nullable();
+            $table->string('province_id')->nullable();
+            $table->integer('regency_id')->nullable();
+            $table->integer('district_id')->nullable();
+            $table->integer('village_id')->nullable();
             $table->text('location_name')->nullable(); // rumah sakit, puskesmas, dll
             $table->foreignId('created_by')->nullable()->constrained('users');
             $table->foreignId('updated_by')->nullable()->constrained('users');
@@ -34,6 +32,10 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::table('samples', function (Blueprint $table) {
+            $table->dropForeign(['created_by']);
+            $table->dropForeign(['updated_by']);
+        });
         Schema::dropIfExists('samples');
     }
 };

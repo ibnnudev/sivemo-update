@@ -10,12 +10,20 @@ class Regency extends Model
     use HasFactory;
 
     public $table = 'regencies';
+    public $incrementing = false;
+    protected $keyType = 'string';
 
     protected $fillable = [
         'id',
         'province_id',
         'name',
         'is_active',
+    ];
+
+    // CASTS: id as string
+    protected $casts = [
+        'id' => 'string',
+        'province_id' => 'string',
     ];
 
     // RELATIONSHIPS

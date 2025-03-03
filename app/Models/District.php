@@ -10,12 +10,20 @@ class District extends Model
     use HasFactory;
 
     public $table = 'districts';
+    public $incrementing = false;
+    protected $keyType = 'string';
 
     protected $fillable = [
         'id',
         'regency_id',
         'name',
         'is_active',
+    ];
+
+    // CASTS: id as string
+    protected $casts = [
+        'id' => 'string',
+        'regency_id' => 'string',
     ];
 
     // RELATIONSHIPS
