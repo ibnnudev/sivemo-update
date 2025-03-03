@@ -18,7 +18,7 @@ class EnvironmentTypeController extends Controller
 
     public function index(Request $request)
     {
-        if ($request->ajax()) {
+        if ($request->wantsJson()) {
             return datatables()
                 ->of($this->environmentType->getAll())
                 ->addColumn('name', function ($data) {

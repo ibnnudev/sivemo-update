@@ -23,7 +23,7 @@ class VariableAgentController extends Controller
     public function index(Request $request)
     {
         // return $this->sample->getAllRegency();
-        if ($request->ajax()) {
+        if ($request->wantsJson()) {
             return datatables()
                 ->of($this->sample->getAllRegency())
                 ->addColumn('regency', function ($data) {
@@ -48,7 +48,7 @@ class VariableAgentController extends Controller
     public function show($id, Request $request)
     {
         // return $this->sample->getAllGroupByDistrict($id);
-        if ($request->ajax()) {
+        if ($request->wantsJson()) {
             return datatables()
                 ->of($this->sample->getAllGroupByDistrict($id))
                 ->addColumn('district', function ($data) {

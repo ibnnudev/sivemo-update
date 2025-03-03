@@ -63,7 +63,7 @@ class LarvaeController extends Controller
 
     public function index(Request $request)
     {
-        if ($request->ajax()) {
+        if ($request->wantsJson()) {
             return datatables()
                 ->of($this->larvae->getAll())
                 ->addColumn('larva_code', function ($data) {
@@ -170,7 +170,7 @@ class LarvaeController extends Controller
      */
     public function show(string $id, Request $request)
     {
-        if ($request->ajax()) {
+        if ($request->wantsJson()) {
             return datatables()
                 ->of($this->larvae->getById($id)->detailLarvaes)
                 ->addColumn('tpa', function ($data) {

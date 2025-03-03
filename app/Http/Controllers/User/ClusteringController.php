@@ -90,7 +90,7 @@ class ClusteringController extends Controller
     // Controller method
     public function filter(Request $request)
     {
-        if ($request->ajax()) {
+        if ($request->wantsJson()) {
             $epsilon = $request['epsilon'];
             $minPts = $request['minPts'];
             $offset = $request['offset'] ?? 0;

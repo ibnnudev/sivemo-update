@@ -25,7 +25,7 @@ class ClusteringController extends Controller
 
     public function index(Request $request)
     {
-        if ($request->ajax()) {
+        if ($request->wantsJson()) {
             $data = Cluster::all();
 
             return datatables()->of($data)
@@ -129,7 +129,7 @@ class ClusteringController extends Controller
     // Controller method
     public function filter(Request $request)
     {
-        if ($request->ajax()) {
+        if ($request->wantsJson()) {
             $epsilon = $request['epsilon'];
             $minPts = $request['minPts'];
             $offset = $request['offset'] ?? 0;

@@ -18,7 +18,7 @@ class AbjController extends Controller
     public function index(Request $request)
     {
         // return $this->abj->getAllGroupByDistrict();
-        if ($request->ajax()) {
+        if ($request->wantsJson()) {
             return datatables()
                 ->of($this->abj->getAllGroupByDistrict())
                 ->addColumn('district', function ($data) {

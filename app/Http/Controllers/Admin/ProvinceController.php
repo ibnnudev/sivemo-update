@@ -19,7 +19,7 @@ class ProvinceController extends Controller
 
     public function index(Request $request)
     {
-        if ($request->ajax()) {
+        if ($request->wantsJson()) {
             return datatables()
                 ->of($this->province->getAll())
                 ->addColumn('name', function ($data) {
@@ -109,7 +109,7 @@ class ProvinceController extends Controller
 
     public function list(Request $request)
     {
-        if ($request->ajax()) {
+        if ($request->wantsJson()) {
             $provinces = $this->province->getAll();
             $data = new Collection();
             foreach ($provinces as $province) {

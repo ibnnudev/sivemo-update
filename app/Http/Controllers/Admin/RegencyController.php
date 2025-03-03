@@ -21,7 +21,7 @@ class RegencyController extends Controller
 
     public function index(Request $request)
     {
-        if ($request->ajax()) {
+        if ($request->wantsJson()) {
             return datatables()
                 ->of($this->regency->getAll())
                 ->addColumn('regency', function ($data) {

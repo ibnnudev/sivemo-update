@@ -18,7 +18,7 @@ class LocationTypeController extends Controller
 
     public function index(Request $request)
     {
-        if ($request->ajax()) {
+        if ($request->wantsJson()) {
             return datatables()
                 ->of($this->locationType->getAll())
                 ->addColumn('name', function ($data) {

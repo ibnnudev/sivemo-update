@@ -25,7 +25,7 @@ class DistrictController extends Controller
 
     public function index(Request $request)
     {
-        if ($request->ajax()) {
+        if ($request->wantsJson()) {
             return datatables()
                 ->of($this->district->getAll())
                 ->addColumn('district', function ($data) {

@@ -31,7 +31,7 @@ class KshController extends Controller
 
     public function index(Request $request)
     {
-        if ($request->ajax()) {
+        if ($request->wantsJson()) {
             return datatables()
                 ->of($this->ksh->getAll())
                 ->addColumn('sample_code', function ($data) {
@@ -99,7 +99,7 @@ class KshController extends Controller
 
         try {
             $this->ksh->create($request->all());
-            
+
             return redirect()->route('admin.ksh.index')->with('success', 'Data berhasil disimpan');
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', $th->getMessage());
@@ -111,7 +111,7 @@ class KshController extends Controller
      */
     public function show(string $id, Request $request)
     {
-        if ($request->ajax()) {
+        if ($request->wantsJson()) {
             return datatables()
                 ->of($this->ksh->getById($id)->detailKsh)
                 ->addColumn('house_name', function ($data) {
@@ -265,7 +265,7 @@ class KshController extends Controller
 
     public function member(Request $request)
     {
-        if ($request->ajax()) {
+        if ($request->wantsJson()) {
             return datatables()
                 ->of($this->ksh->getAllMember())
                 ->addColumn('name', function ($data) {

@@ -24,7 +24,7 @@ class TCasesController extends Controller
 
     public function index(Request $request)
     {
-        if ($request->ajax()) {
+        if ($request->wantsJson()) {
             return datatables()
                 ->of(TCases::query()->where('is_active', true))
                 ->addColumn('date', function ($data) {

@@ -76,7 +76,7 @@ class SampleController extends Controller
     public function index(Request $request)
     {
         // return $this->sample->getAll();
-        if ($request->ajax()) {
+        if ($request->wantsJson()) {
             return datatables()
                 ->of($this->sample->getAll())
                 ->addColumn('sample_code', function ($data) {

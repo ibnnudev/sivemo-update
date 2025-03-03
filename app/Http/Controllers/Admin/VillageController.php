@@ -19,7 +19,7 @@ class VillageController extends Controller
     {
         $villages = $this->village->getAll();
 
-        if ($request->ajax()) {
+        if ($request->wantsJson()) {
             return datatables()
                 ->of(
                     $villages

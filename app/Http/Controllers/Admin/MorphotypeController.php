@@ -19,7 +19,7 @@ class MorphotypeController extends Controller
 
     public function index(Request $request)
     {
-        if ($request->ajax()) {
+        if ($request->wantsJson()) {
             return datatables()
                 ->of($this->morphotype->getAll())
                 ->addColumn('name', function ($data) {
