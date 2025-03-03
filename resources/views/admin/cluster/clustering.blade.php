@@ -8,7 +8,8 @@
     <x-card-container class="mb-6">
         <h2 class="font-semibold text-xs mb-8">Sesuaikan Klaster</h2>
         <div class="flex items-end gap-4">
-            <x-input id="epsilon" label="Epsilon" name="epsilon" type="number" value="0.002839" required />
+            {{-- <x-input id="epsilon" label="Epsilon" name="epsilon" type="number" value="0.002839" required /> --}}
+            <x-input id="epsilon" label="Epsilon" name="epsilon" type="number" value="0.00118" required />
             <x-input id="minPoints" label="Min Points" name="minPoints" type="number" value="1" required />
             <x-button type="submit" class="bg-primary mb-4" id="buttonDbscan">Klasterkan</x-button>
         </div>
@@ -26,8 +27,16 @@
 
     @push('js-internal')
         <script src="https://unpkg.com/leaflet-fullscreen/dist/Leaflet.fullscreen.js"></script>
-        <script src="{{ asset('assets/js/dbscanclustering.js') }}"></script>
+        {{-- <script src="{{ asset('assets/js/dbscanclustering.js') }}"></script> --}}
         <script>
+            function getColor(abj_total) {
+                if (abj_total <= 95) {
+                    return '#e74a3b'; // ABJ Sedang
+                } else {
+                    return '#1cc88a'; // ABJ Rendah1cc88a
+                }
+            }
+
             let listDistrict = [];
             let map = null;
             let allClusters = {};
@@ -72,7 +81,6 @@
                 }
             }
 
-
             function finalizeClustering() {
                 isProcessing = false;
                 setupClustering(Object.values(allClusters));
@@ -98,6 +106,7 @@
                     map.remove();
                 }
 
+                const MAPBOX_ACCESS_TOKEN = "{{ config('app.mapbox_token') }}";
                 // Reinitialize the map container with the desired view
                 map = L.map("map").setView([-7.265757, 112.734146], 13);
                 L.tileLayer(
@@ -107,7 +116,7 @@
                         id: "mapbox/light-v11",
                         tileSize: 512,
                         zoomOffset: -1,
-                        accessToken: "{{ env('MAPBOX_TOKEN') }}",
+                        accessToken: MAPBOX_ACCESS_TOKEN,
                     }
                 ).addTo(map);
 
@@ -394,6 +403,107 @@
 
                 // Start the long polling process
                 pollClusterData(epsilon, minPoints);
+
+                // check if $abj is not empty
+                @if (count($abj) > 0)
+                    console.log("ABJ data is not empty");
+
+                    async function updateMapData() {
+                        // Menggunakan fetch untuk mengambil data GeoJSON dari URL
+                        let abj = Object.values(@json($abj));
+                        fetch("{{ asset('assets/geojson/surabaya.json') }}")
+                            .then((response) => response.json())
+                            .then((data) => {
+                                const geojson = {
+                                    type: 'FeatureCollection',
+                                    features: []
+                                };
+
+                                data.features.forEach((feature) => {
+                                    const properties = feature.properties;
+                                    const kecamatan = properties.KECAMATAN;
+
+                                    abj.forEach((abjItem) => {
+                                        if (abjItem.district === kecamatan) {
+                                            // Sekarang Anda memiliki array koordinat dari fitur yang sesuai
+                                            const coordinates = feature.geometry.coordinates;
+
+                                            // Ubah koordinat jika diperlukan
+                                            const coordinates2 = coordinates[0];
+                                            // console.log(coordinates2);
+
+                                            geojson.features.push({
+                                                type: 'Feature',
+                                                geometry: {
+                                                    type: 'Polygon',
+                                                    coordinates: [coordinates2]
+                                                },
+                                                properties: {
+                                                    color: getColor(abjItem.abj_total),
+                                                    regency: abjItem.regency,
+                                                    district: properties.KECAMATAN,
+                                                    village: properties.KELURAHAN,
+                                                    abj: abjItem.abj_total,
+                                                    total_sample: abjItem.total_sample,
+                                                    total_check: abjItem.total_check
+                                                }
+                                            });
+                                        }
+                                    });
+                                });
+
+                                L.geoJSON(geojson, {
+                                    style: function(feature) {
+                                        return {
+                                            fillColor: feature.properties.color,
+                                            color: feature.properties.color,
+                                            weight: 0.5,
+                                            fillOpacity: 0.5,
+                                        };
+                                    },
+                                    onEachFeature: function(feature, layer) {
+                                        layer.on('click', function(e) {
+                                            const coordinates = e.latlng;
+                                            const properties = feature.properties;
+
+                                            const popupContent = `
+                                        <p><strong>Kabupaten/Kota:</strong> ${properties.regency}</p>
+                                        <p><strong>Kecamatan:</strong> ${properties.district}</p>
+                                        <p><strong>ABJ:</strong> ${properties.abj}%</p>
+                                        <p><strong>Total Sampel:</strong> ${properties.total_sample}</p>
+                                        <p><strong>Total Pemeriksaan:</strong> ${properties.total_check}</p>
+                                    `;
+
+                                            L.popup()
+                                                .setLatLng(coordinates)
+                                                .setContent(popupContent)
+                                                .openOn(map);
+
+                                            // Zoom to the clicked feature
+                                            map.fitBounds(layer.getBounds(), {
+                                                padding: [100, 100]
+                                            });
+                                        });
+
+                                        layer.on('mouseover', function(e) {
+                                            map.getContainer().style.cursor = 'pointer';
+                                        });
+
+                                        layer.on('mouseout', function(e) {
+                                            map.getContainer().style.cursor = '';
+                                        });
+                                    }
+                                }).addTo(map);
+                            })
+                            .catch((error) => {
+                                console.error("Gagal mengambil data GeoJSON:", error);
+                            });
+
+
+                    }
+
+                    updateMapData(); // map update
+                @endif
             });
         </script>
     @endpush

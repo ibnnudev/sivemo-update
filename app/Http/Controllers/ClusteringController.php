@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Imports\ClusterSampleImport;
 use App\Models\Cluster;
+use App\Repositories\Interface\AbjInterface;
 use App\Repositories\Interface\ClusteringInterface;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -12,10 +13,14 @@ use Maatwebsite\Excel\Validators\ValidationException;
 class ClusteringController extends Controller
 {
     private $operation;
+    private $abj;
 
-    public function __construct(ClusteringInterface $operation)
-    {
+    public function __construct(
+        ClusteringInterface $operation,
+        AbjInterface $abj
+    ) {
         $this->operation = $operation;
+        $this->abj = $abj;
     }
 
     public function index(Request $request)
@@ -116,7 +121,9 @@ class ClusteringController extends Controller
 
     public function clustering(Request $request)
     {
-        return view('admin.cluster.clustering');
+        return view('admin.cluster.clustering', [
+            'abj' => $this->abj->getAllGroupByDistrict()
+        ]);
     }
 
     // Controller method
@@ -129,6 +136,7 @@ class ClusteringController extends Controller
             $limit = 500; // Process 1000 items per request
 
             $dataset = Cluster::skip($offset)->take($limit)->get();
+
             $datasetArray = $dataset->map(function ($item) {
                 return [
                     $item->latitude,

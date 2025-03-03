@@ -1,7 +1,6 @@
 <x-guest-layout>
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
-
     <section class="bg-white">
         <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
             <a href="/" class="flex items-center text-2xl mb-6 font-semibold text-gray-900 dark:text-white">

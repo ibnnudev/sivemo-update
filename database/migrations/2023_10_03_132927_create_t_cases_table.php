@@ -18,9 +18,9 @@ class CreateTCasesTable extends Migration
             $table->date('date');
             $table->string('vector_type'); // Ubah jenis data sesuai kebutuhan, misalnya enum atau varchar
             $table->integer('cases_total');
-            $table->char('regency_id')->nullable();
-            $table->char('district_id')->nullable();
-            $table->char('village_id')->nullable();
+            $table->string('regency_id')->nullable();
+            $table->string('district_id')->nullable();
+            $table->string('village_id')->nullable();
             $table->foreign('regency_id')->references('id')->on('regencies');
             $table->foreign('district_id')->references('id')->on('districts');
             $table->foreign('village_id')->references('id')->on('villages');

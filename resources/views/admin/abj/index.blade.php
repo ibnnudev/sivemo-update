@@ -139,6 +139,7 @@
                 }
             }
 
+            const MAPBOX_ACCESS_TOKEN = "{{ config('app.mapbox_token') }}";
             const map = L.map('map').setView([-7.2756196, 112.7106256], 11.5);
 
             L.tileLayer(
@@ -148,7 +149,7 @@
                     id: 'mapbox/light-v11',
                     tileSize: 512,
                     zoomOffset: -1,
-                    accessToken: '{{ env('MAPBOX_TOKEN') }}',
+                    accessToken: MAPBOX_ACCESS_TOKEN
                 }
             ).addTo(map);
 

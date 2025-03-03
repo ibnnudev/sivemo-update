@@ -19,6 +19,7 @@ use App\Repositories\Interface\SerotypeInterface;
 use App\Repositories\Interface\VillageInterface;
 use App\Repositories\Interface\VirusInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Validators\ValidationException;
 
@@ -82,7 +83,7 @@ class SampleController extends Controller
                     return $data->sample_code;
                 })
                 ->addColumn('address', function ($data) {
-                    $address = $data->village->name.', '.$data->district->name.', '.$data->regency->name.', '.$data->province->name;
+                    $address = $data->village->name . ', ' . $data->district->name . ', ' . $data->regency->name . ', ' . $data->province->name;
 
                     $address = strtolower($address);
 
@@ -164,9 +165,7 @@ class SampleController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-    }
+    public function show(string $id) {}
 
     /**
      * Show the form for editing the specified resource.
@@ -310,8 +309,10 @@ class SampleController extends Controller
         try {
             $fileCode = uniqid();
             Excel::import(new SampleImport($fileCode), $request->file('import_file'));
-            $filename = $fileCode.'.'.$request->file('import_file')->getClientOriginalExtension();
-            $request->file('import_file')->storeAs('public/sample-imported', $filename);
+            $filename = $fileCode . '.' . $request->file('import_file')->getClientOriginalExtension();
+            // $request->file('import_file')->storeAs('sample-imported', $filename);
+
+            Storage::putFileAs('/public/sample-imported', $request->file('import_file'), $filename);
 
             return redirect()->route('admin.sample.index')->with('success', 'Data berhasil diimport.');
         } catch (ValidationException $th) {
@@ -332,8 +333,6 @@ class SampleController extends Controller
             $fileCode = uniqid();
             Excel::import(new DetailSampleImport($request->sample_id), $request->file('import_file'));
 
-            // $filename = $fileCode . '.' . $request->file('import_file')->getClientOriginalExtension();
-            // $request->file('import_file')->storeAs('public/detail-sample-imported', $filename);
             return redirect()->back()->with('success', 'Data berhasil diimport.');
         } catch (ValidationException $th) {
             dd($th->getMessage());
@@ -349,7 +348,7 @@ class SampleController extends Controller
     {
         $sample = $this->sample->getById($id);
 
-        return Excel::download(new DetailSampleExport($id), 'DETAIL SAMPLE_'.$sample->sample_code.uniqid().'.xlsx');
+        return Excel::download(new DetailSampleExport($id), 'DETAIL SAMPLE_' . $sample->sample_code . uniqid() . '.xlsx');
     }
 
     public function updateSingleAmountDetailSampleVirus($id, Request $request)

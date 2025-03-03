@@ -2,7 +2,7 @@
 
     <main class="pt-8 pb-16 lg:pt-16 lg:pb-24 bg-white dark:bg-gray-900">
         <div class="flex justify-between px-4 mx-auto max-w-screen-xl ">
-            <article class="mx-auto w-full max-w-3xl format format-sm sm:format-base lg:format-lg">
+            <article class="mx-auto w-full max-w-5xl format format-sm sm:format-base lg:format-lg">
                 <div class="text-sm">
                     <div class="text-sm">
                         <div class="xl:grid grid-cols-3 items-center">
@@ -142,6 +142,8 @@
 
             let markers = L.markerClusterGroup();
 
+            const MAPBOX_ACCESS_TOKEN = "{{ config('app.mapbox_token') }}";
+
             L.tileLayer(
                 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
                     attribution: '&copy; <a href="https://www.mapbox.com/">Mapbox</a> &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
@@ -149,7 +151,7 @@
                     id: 'mapbox/light-v11',
                     tileSize: 512,
                     zoomOffset: -1,
-                    accessToken: '{{ env('MAPBOX_TOKEN') }}',
+                    accessToken: MAPBOX_ACCESS_TOKEN
                 }
             ).addTo(map);
 

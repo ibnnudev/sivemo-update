@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('regencies', function (Blueprint $table) {
-            $table->char('id')->primary();
-            $table->char('province_id');
+            $table->text('id')->primary();
+            $table->text('province_id');
             $table->string('name');
             $table->boolean('is_active')->default(true);
             $table->timestamps();

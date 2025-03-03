@@ -114,6 +114,8 @@
             $(function() {
                 let map = L.map("map").setView([latitude, longitude], 13);
 
+                const MAPBOX_ACCESS_TOKEN = "{{ config('app.mapbox_token') }}";
+
                 // tile google maps source
                 L.tileLayer(
                     'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
@@ -122,7 +124,7 @@
                         id: 'mapbox/light-v11',
                         tileSize: 512,
                         zoomOffset: -1,
-                        accessToken: '{{ env('MAPBOX_TOKEN') }}',
+                        accessToken: MAPBOX_ACCESS_TOKEN
                     }
                 ).addTo(map);
 

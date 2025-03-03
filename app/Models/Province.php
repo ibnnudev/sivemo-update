@@ -10,10 +10,17 @@ class Province extends Model
     use HasFactory;
 
     public $table = 'provinces';
+    public $incrementing = false;
+    protected $keyType = 'string';
 
     protected $fillable = [
         'name',
         'is_active',
+    ];
+
+    // CASTS: id as string
+    protected $casts = [
+        'id' => 'string',
     ];
 
     // RELATIONSHIPS
@@ -24,7 +31,7 @@ class Province extends Model
 
     public function regencies()
     {
-        return $this->hasMany(Regency::class);
+        return $this->hasMany(Regency::class, 'province_id', 'id');
     }
 
     public function villages()

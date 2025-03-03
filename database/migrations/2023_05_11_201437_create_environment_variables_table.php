@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('environment_variables', function (Blueprint $table) {
             $table->id();
-            $table->char('district_id')->nullable()->constrained('districts');
-            $table->char('village_id')->nullable()->constrained('villages');
+            $table->string('district_id')->nullable()->constrained('districts');
+            $table->string('village_id')->nullable()->constrained('villages');
             $table->double('moisture');
             $table->double('temperature');
             $table->integer('rain_day');

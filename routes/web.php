@@ -25,21 +25,21 @@ use App\Http\Controllers\Admin\VillageController;
 use App\Http\Controllers\Admin\VirusController;
 use App\Http\Controllers\ClusteringController;
 use App\Http\Controllers\User\AuthController;
+use App\Http\Controllers\User\ClusteringController as UserClusteringController;
 use App\Http\Controllers\User\HomeController;
 use App\Http\Controllers\User\LarvaeController as UserLarvaeController;
 use App\Http\Controllers\User\VectorController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
+Route::group(['prefix' => 'clustering', 'as' => 'user.clustering.'], function () {
+    Route::get('/', [UserClusteringController::class, 'index'])->name('index');
+    Route::get('get-initial-data', [UserClusteringController::class, 'getInitialData'])->name('get-initial-data');
+    Route::get('clustering', [UserClusteringController::class, 'clustering'])->name('clustering');
+    Route::get('distance', [UserClusteringController::class, 'distance'])->name('distance');
+    Route::get('filter', [UserClusteringController::class, 'filter'])->name('filter');
+    Route::get('filter-chart-sample-per-year', [UserClusteringController::class, 'filterChartSamplePerYear'])->name('filter-chart-sample-per-year');
+    Route::get('get-sample-and-abj-by-district', [UserClusteringController::class, 'getSampleAndAbjByDistrict'])->name('get-sample-and-abj-by-district');
+});
 
 Route::get('ksh', [HomeController::class, 'ksh'])->name('user.ksh');
 
@@ -113,10 +113,10 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
         Route::get('virus/list', [VirusController::class, 'list'])->name('admin.virus.list');
         Route::resource('virus', VirusController::class, ['as' => 'admin']);
 
-        // 
-        Route::group(['prefix'=>'outdoor-breeding','as'=>'admin.outdoor-breeding.'],function(){
-            Route::get('artificial',[OutdoorBreedingSite::class,'artificial_index'])->name('artificial_index');
-            Route::get('natural',[OutdoorBreedingSite::class,'natural_index'])->name('natural_index');
+        //
+        Route::group(['prefix' => 'outdoor-breeding', 'as' => 'admin.outdoor-breeding.'], function () {
+            Route::get('artificial', [OutdoorBreedingSite::class, 'artificial_index'])->name('artificial_index');
+            Route::get('natural', [OutdoorBreedingSite::class, 'natural_index'])->name('natural_index');
         });
 
         // Morphotype
@@ -177,15 +177,12 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     Route::resource('abj', AbjController::class, ['as' => 'admin'])->only(['index']);
 
     // User
+    Route::get('get-image/{filename}', [UserController::class, 'getImage'])->name('admin.user.get-image');
     Route::post('user/{id}/update-user-account', [UserController::class, 'updateUserAccount'])->name('admin.user.update-user-account');
     Route::post('user/update-profile-picture', [UserController::class, 'updateProfilePicture'])->name('admin.user.update-profile-picture');
     Route::resource('user', UserController::class, ['as' => 'admin']);
 
     // Tcases
-    Route::get('tcases', [TCasesController::class, 'index'])->name('admin.tcases.index');
-    Route::get('tcases/create', [TCasesController::class, 'create'])->name('admin.tcases.create');
-    Route::post('tcases/store', [TCasesController::class, 'store'])->name('admin.tcases.store');
-    Route::get('tcases/{id}/edit', [TCasesController::class, 'edit'])->name('admin.tcases.edit');
     Route::post('tcases/importexcel', [TCasesController::class, 'importexcel'])->name('admin.tcases.importexcel');
     Route::resource('tcases', TCasesController::class, ['as' => 'admin']);
 

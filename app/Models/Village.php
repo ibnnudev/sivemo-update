@@ -10,12 +10,20 @@ class Village extends Model
     use HasFactory;
 
     public $table = 'villages';
+    public $incrementing = false;
+    protected $keyType = 'string';
 
     protected $fillable = [
         'id',
         'district_id',
         'name',
         'is_active',
+    ];
+
+    // CASTS: id as string
+    protected $casts = [
+        'id' => 'string',
+        'district_id' => 'string',
     ];
 
     // RELATIONSHIPS

@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('cases', function (Blueprint $table) {
             $table->id();
             $table->foreignId('abj_id')->nullable()->constrained('abj');
-            $table->char('district_id')->nullable();
-            $table->char('village_id')->nullable();
+            $table->string('district_id')->nullable();
+            $table->string('village_id')->nullable();
             $table->integer('amount_of_case');
             $table->foreignId('created_by')->nullable()->constrained('users');
             $table->foreignId('updated_by')->nullable()->constrained('users');

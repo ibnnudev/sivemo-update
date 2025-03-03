@@ -25,7 +25,7 @@
                             <span class="sr-only">Open user menu</span>
                             <img class="w-8 h-8 rounded-full"
                                 src="{{ auth()->user()->profile_picture
-                                    ? asset('storage/profile-picture/' . auth()->user()->profile_picture)
+                                    ? route('admin.user.get-image', auth()->user()->profile_picture)
                                     : asset('assets/images/noimage.jpg') }}"
                                 alt="user photo">
                         </button>

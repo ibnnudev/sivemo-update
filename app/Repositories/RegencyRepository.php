@@ -20,6 +20,7 @@ class RegencyRepository implements RegencyInterface
 
     public function getAll()
     {
+        // get all regencies with province (province_id is string)
         return $this->regency->with('province')->get();
     }
 

@@ -17,6 +17,7 @@ return [
     */
 
     'name' => env('APP_NAME', 'Laravel'),
+    'mapbox_token' => env('MAPBOX_TOKEN'),
 
     /*
     |--------------------------------------------------------------------------

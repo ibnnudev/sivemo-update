@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -93,14 +94,15 @@ class UserController extends Controller
             $oldProfilePicture = $user->profile_picture;
 
             if ($oldProfilePicture != null) {
-                $oldProfilePicturePath = public_path('storage/profile-picture'.$oldProfilePicture);
+                $oldProfilePicturePath = public_path('storage/public/profile-picture' . $oldProfilePicture);
                 if (file_exists($oldProfilePicturePath)) {
                     unlink($oldProfilePicturePath);
                 }
             }
 
-            $filename = uniqid().'.'.$request->profile_picture->extension();
-            $request->profile_picture->storeAs('public/profile-picture', $filename);
+            $filename = uniqid() . '.' . $request->profile_picture->extension();
+            // $request->profile_picture->storeAs('public/profile-picture', $filename);
+            Storage::putFileAs('public/profile-picture', $request->profile_picture, $filename);
 
             $user->profile_picture = $filename;
 
@@ -158,5 +160,11 @@ class UserController extends Controller
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', $th->getMessage());
         }
+    }
+
+    public function getImage($filename)
+    {
+        $path = Storage::path('public/profile-picture/' . $filename);
+        return response()->file($path);
     }
 }

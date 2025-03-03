@@ -1,126 +1,113 @@
-<x-app-layout>
-    <x-breadcrumb name="dashboard" />
-    <div class="space-y-6">
-        <div class="z-0 relative mb-4" style="height: 350px; border-radius: 6px;">
-            <!-- Legenda -->
-            <div class="absolute bottom-0 right-0 p-2 mr-2 mb-2 bg-white shadow text-xs" style="z-index: 2;">
-                <h5 class="mb-2 legend-text text-xs ">Legend</h5>
-                <ul class="list-unstyled">
-                    <li>
-                        <span class="legend-color legend-green text-xs"></span>
-                        ABJ Normal
-                    </li>
-                    <li>
-                        <span class="legend-color legend-red text-xs"></span>
-                        ABJ Tidak Normal
-                    </li>
-                    <!-- Tambahkan elemen li sesuai dengan legenda Anda -->
-                </ul>
-            </div>
-            <!-- Peta -->
-            <div id="map" style="height: 100%; position: relative; z-index: 1;"></div>
+<x-user-layout>
+
+    <main class="pt-8 pb-16 lg:pt-16 lg:pb-24 bg-white dark:bg-gray-900">
+        <div class="flex justify-between px-4 mx-auto max-w-screen-xl">
+            <article class="mx-auto w-full max-w-5xl format format-sm sm:format-base lg:format-lg">
+                <div class="space-y-6">
+                    <div class="z-0 relative mb-4" style="height: 350px; border-radius: 6px;">
+                        <!-- Legenda -->
+                        <div class="absolute bottom-0 right-0 p-2 mr-2 mb-2 bg-white shadow text-sm" style="z-index: 2;">
+                            <h5 class="mb-2 legend-text text-sm ">Legend</h5>
+                            <div class="list-unstyled">
+                                <div>
+                                    <span class="legend-color legend-green text-sm"></span>
+                                    ABJ Normal
+                                </div>
+                                <div>
+                                    <span class="legend-color legend-red text-sm"></span>
+                                    ABJ Tidak Normal
+                                </div>
+                                <!-- Tambahkan elemen li sesuai dengan legenda Anda -->
+                            </div>
+                        </div>
+                        <!-- Peta -->
+                        <div id="map" style="height: 100%; position: relative; z-index: 1;"></div>
+                    </div>
+
+                    <x-card-container class="mb-6 text-sm">
+                        <h4 class="font-semibold mb-1">Sesuaikan Klaster</h4>
+                        <p class="mb-8 text-gray-500">Hasil klaster terlihat pada peta diatas. Anda dapat menyesuaikan
+                            klaster
+                            dengan mengubah
+                            nilai epsilon
+                            dan min points.</p>
+                        <div class="flex items-end gap-4">
+                            {{-- <x-input id="epsilon" label="Epsilon" name="epsilon" type="number" value="0.002839" --}}
+                            <x-input id="epsilon" label="Epsilon" name="epsilon" type="number" value="0.00118"
+                                required />
+                            <x-input id="minPoints" label="Min Points" name="minPoints" type="number" value="1"
+                                required />
+                            <x-button type="submit" class="bg-primary mb-4" id="buttonDbscan">Klasterkan</x-button>
+                        </div>
+                    </x-card-container>
+                </div>
+
+                <div class="text-sm mt-6">
+                    <div>
+                        <h2 class="from-blue-400 to-purple-700 bg-gradient-to-r bg-clip-text text-transparent">
+                            Cluster Analysis: DBSCAN
+                        </h2>
+                        <p class="leading-7">
+                            Data clustering is a fundamental task in machine learning and data analysis. One
+                            powerful technique that has gained prominence is Density-Based Spatial Clustering of
+                            Applications with Noise (DBSCAN). In this blog, we delve into the world of DBSCAN,
+                            exploring its principles and applications in uncovering hidden structures within
+                            datasets.
+                        </p>
+                        <p class="leading-7">
+                            Join us on a journey to understand how DBSCAN goes beyond traditional clustering
+                            methods, offering a unique approach to identifying clusters based on the density of data
+                            points. Let’s unravel the intricacies of DBSCAN and unlock its potential for unraveling
+                            patterns in your data.
+                        </p>
+                    </div>
+
+                    <h3>Idea behind density based clustering :</h3>
+                    <ol class="list-inside list-disc">
+                        <li class="leading-7">
+                            Density based clustering algorithms divides your entire dataset into dense regions separated
+                            by sparse regions.
+                        </li>
+                    </ol>
+                    <h3>MinPts and Epsilon :</h3>
+                    <ol class="list-inside list-disc">
+                        <li class="leading-7">
+                            Measuring density around a point is straightforward — we define a region around the point
+                            and assess the number of points within that designated area. This approach serves as a
+                            practical method for gauging the density surrounding a specific point.
+                        </li>
+                        <li class="leading-7">
+                            To determine density around a point, we employ circles in 2-D, spheres in 3-D, and
+                            hyper-spheres in n-dimensional spaces. Suppose we draw unit radius circle around a point P
+                            as shown in above figure and here we establish a criterion: a region is considered sparse if
+                            it contains fewer than 3 points and dense if it contains 3 or more points.
+                        </li>
+                        <li class="leading-7">
+                            MinPts stands for “Minimum Points”, is a parameter that specifies the minimum number of
+                            points required to form a dense region, which is consider a cluster.
+                        </li>
+                    </ol>
+                    <h3>Core Points, Border Points and Noise Points :</h3>
+                    <p class="leading-7">
+                        A point is considered a core point if it has a minimum number of other points(specified by
+                        MinPts) within a given radius ε of itself.
+                    </p>
+                    <p class="leading-7">
+                        In the depicted diagram, with ε set to 1 and MinPts to 4, let’s focus on a specific point, P. To
+                        determine if P qualifies as a core point, we create a circle with a radius of 1 unit around P.
+                        Observing the diagram, it’s evident that point P, along with three additional points within the
+                        circle, satisfies the MinPts condition. Hence, we can confidently classify point P as a core
+                        point.
+                    </p>
+                    <p class="leading-7">
+                        Examining the diagram, it’s evident that within the circle surrounding a specific point, there
+                        are only two points in addition to the point itself, totaling three points. This doesn’t meet
+                        the MinPts requirement of 4, leading us to conclude that it is not a core point.
+                    </p>
+                </div>
+            </article>
         </div>
-        <div class="grid grid-cols-4 gap-4">
-            <div class="p-6 bg-white border border-gray-200 rounded-lg shadow flex items-center mb-4 md:mb-0">
-                <i class="fas fa-users fa-2x text-primary mr-4 "></i>
-                <div>
-                    <a href="#">
-                        <h5 class="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
-                            {{ number_format($usersCount, 0, ',', '.') }}
-                        </h5>
-                    </a>
-                    <p class="font-normal text-sm text-gray-500">Pengguna</p>
-                </div>
-            </div>
-            <div class="p-6 bg-white border border-gray-200 rounded-lg shadow flex items-center mb-4 md:mb-0">
-                <i class="fas fa-chart-simple fa-2x text-success mr-4"></i>
-                <div>
-                    <a href="#">
-                        <h5 class="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
-                            {{ number_format($totalSample, 0, ',', '.') }}
-                        </h5>
-                    </a>
-                    <p class="font-normal text-sm text-gray-500">Sampel Nyamuk</p>
-                </div>
-            </div>
-            <div class="p-6 bg-white border border-gray-200 rounded-lg shadow flex items-center mb-4 md:mb-0">
-                <i class="fas fa-mosquito fa-2x text-error mr-4"></i>
-                <div>
-                    <a href="#">
-                        <h5 class="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
-                            {{ number_format($totalMosquito, 0, ',', '.') }}
-                        </h5>
-                    </a>
-                    <p class="font-normal text-sm text-gray-500">Total Nyamuk</p>
-                </div>
-            </div>
-            <div class="p-6 bg-white border border-gray-200 rounded-lg shadow flex items-center mb-4 md:mb-0">
-                <i class="fas fa-worm fa-2x text-warning mr-4"></i>
-                <div>
-                    <a href="#">
-                        <h5 class="mb-1 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
-                            {{ number_format($totalLarva, 0, ',', '.') }}
-                        </h5>
-                    </a>
-                    <p class="font-normal text-sm text-gray-500">Total Larva</p>
-                </div>
-            </div>
-        </div>
-
-        <x-card-container class="mb-6 text-sm">
-            <h2 class="font-semibold mb-1">Sesuaikan Klaster</h2>
-            <p class="mb-8 text-gray-500">Hasil klaster terlihat pada peta diatas. Anda dapat menyesuaikan klaster
-                dengan mengubah
-                nilai epsilon
-                dan min points.</p>
-            <div class="flex items-end gap-4">
-                {{-- <x-input id="epsilon" label="Epsilon" name="epsilon" type="number" value="0.002839" required /> --}}
-                <x-input id="epsilon" label="Epsilon" name="epsilon" type="number" value="0.00118" required />
-                <x-input id="minPoints" label="Min Points" name="minPoints" type="number" value="1" required />
-                <x-button type="submit" class="bg-primary mb-4" id="buttonDbscan">Klasterkan</x-button>
-            </div>
-        </x-card-container>
-
-        {{-- <x-card-container class="mb-4 hidden" id="jumlahKlasterContainer">
-            <h2 class="font-semibold text-xs mb-8">Jumlah Klaster Terbentuk</h2>
-            <div class="clusterContainer grid grid-cols-4 gap-6"></div>
-        </x-card-container> --}}
-
-        <x-card-container>
-            <div class="flex justify-between items-center">
-                <div>
-                    <p class="text-sm font-semibold">Statistik Sampel</p>
-                    <small class="text-gray-400">Jumlah sampel nyamuk yang diperiksa</small>
-                </div>
-                <x-select id="filterSamplePerYearChart" name="filterSamplePerYearChart">
-                    @php
-                        $years = [];
-                        for ($i = 2021; $i <= date('Y'); $i++) {
-                            $years[] = $i;
-                        }
-                    @endphp
-
-                    @foreach ($years as $year)
-                        <option value="{{ $year }}">{{ $year }}</option>
-                    @endforeach
-                </x-select>
-            </div>
-            <canvas id="samplePerYear"></canvas>
-        </x-card-container>
-        <x-card-container class="mt-8" id="sampleAbjCard" style="height: 410px; max-height: 100%; overflow: hidden">
-            <div class="md:flex justify-between items-center">
-                <p class="text-sm font-semibold">
-                    Data Sampel dan ABJ (%)
-                </p>
-                <x-select id="regency" name="regency" label="Kabupaten">
-                    @foreach ($regencies as $regency)
-                        <option value="{{ $regency->id }}">{{ $regency->name }}</option>
-                    @endforeach
-                </x-select>
-            </div>
-            <canvas id="sampleAndAbj"></canvas>
-        </x-card-container>
-    </div>
+    </main>
 
     @push('js-internal')
         <script src="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js"></script>
@@ -410,7 +397,7 @@
 
             function pollClusterData(epsilon, minPoints) {
                 $.ajax({
-                    url: "{{ route('admin.cluster.filter') }}",
+                    url: "{{ route('user.clustering.filter') }}",
                     type: "GET",
                     data: {
                         epsilon: epsilon,
@@ -418,6 +405,20 @@
                         offset: clusteringData.offset
                     },
                     success: function(response) {
+                        // remove previous circle
+                        map.eachLayer(function(layer) {
+                            if (layer instanceof L.Circle) {
+                                map.removeLayer(layer);
+                            }
+                        });
+
+                        // remove previous marker
+                        map.eachLayer(function(layer) {
+                            if (layer instanceof L.Marker) {
+                                map.removeLayer(layer);
+                            }
+                        });
+
                         processClusterChunk(response.cluster);
 
                         if (response.isComplete) {
@@ -458,6 +459,8 @@
                     icon: "success",
                     title: "Klasterisasi",
                     text: "Klasterisasi data berhasil dilakukan",
+                    showConfirmButton: false,
+                    timer: 2000
                 });
             }
 
@@ -466,6 +469,9 @@
 
                 let colorMap = {};
                 const generateColor = () => `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+                // avoid red color
+                colorMap[0] = "#000000";
+
 
                 data.forEach((clusterItems, index) => {
                     clusteringData.listDistrict.push(clusterItems.map(item => item));
@@ -642,6 +648,9 @@
                 const epsilon = parseFloat($("#epsilon").val()) || 0;
                 const minPoints = parseInt($("#minPoints").val()) || 1;
 
+                console.log(epsilon, minPoints);
+
+
                 if (epsilon <= 0 || minPoints <= 0) {
                     Swal.fire({
                         icon: "error",
@@ -669,347 +678,5 @@
                 $("#buttonDbscan").click();
             });
         </script>
-
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <script>
-            $(document).ready(function() {
-                let samplePerYear = @json($samplePerYear);
-                let myChart;
-
-                // Ensure the canvas element exists before attempting to access it
-                let ctx = document.getElementById('samplePerYear');
-                if (ctx) {
-                    ctx = ctx.getContext('2d');
-                    ctx.canvas.width = '100%';
-
-                    let purplePallete = [
-                        '#4e73df',
-                        '#6f42c1',
-                        '#9c27b0',
-                    ];
-
-                    function updateChart(data) {
-                        var labels = data.map(entry => entry.month);
-                        var mosquitoTypes = Object.keys(data[0].type);
-                        var mosquitoAmounts = data.map(entry => Object.values(entry.type));
-
-                        var datasets = mosquitoTypes.map((type, index) => {
-                            return {
-                                label: type,
-                                data: mosquitoAmounts.map(amounts => amounts[index]),
-                                backgroundColor: purplePallete[index],
-                                borderColor: purplePallete[index],
-                                borderWidth: 1,
-                                fill: false,
-                                pointRadius: 3,
-                                pointHoverRadius: 5,
-                                pointHitRadius: 10,
-                                pointBackgroundColor: purplePallete[index],
-                                pointBorderColor: purplePallete[index],
-                                pointHoverBackgroundColor: purplePallete[index],
-                                pointHoverBorderColor: purplePallete[index],
-                            };
-                        });
-
-                        if (myChart) {
-                            myChart.destroy();
-                        }
-
-                        myChart = new Chart(ctx, {
-                            type: 'line',
-                            data: {
-                                labels: labels,
-                                datasets: datasets
-                            },
-                            options: {
-                                responsive: true,
-                                interaction: {
-                                    mode: 'index',
-                                    intersect: false
-                                },
-                                scales: {
-                                    y: {
-                                        stacked: true,
-                                        grid: {
-                                            display: false,
-                                        },
-                                        ticks: {
-                                            beginAtZero: true,
-                                            precision: 0,
-                                            stepSize: 1,
-                                        },
-                                    },
-                                    x: {
-                                        stacked: true,
-                                        grid: {
-                                            display: false,
-                                        },
-                                        ticks: {
-                                            beginAtZero: true,
-                                            precision: 0,
-                                            stepSize: 1,
-                                        },
-                                    },
-                                },
-                                plugins: {
-                                    tooltip: {
-                                        mode: 'index',
-                                        intersect: false
-                                    },
-                                    legend: {
-                                        labels: {
-                                            usePointStyle: true,
-                                            boxWidth: 5,
-                                            boxHeight: 5,
-                                        },
-                                    },
-                                },
-                            }
-                        });
-                    }
-
-                    function emptyChart() {
-                        if (myChart) {
-                            myChart.destroy();
-                        }
-
-                        myChart = new Chart(ctx, {
-                            type: 'line',
-                            data: {
-                                labels: [],
-                                datasets: []
-                            },
-                            options: {
-                                responsive: true,
-                                interaction: {
-                                    mode: 'index',
-                                    intersect: false
-                                },
-                                scales: {
-                                    y: {
-                                        stacked: true,
-                                        grid: {
-                                            display: false,
-                                        },
-                                        ticks: {
-                                            beginAtZero: true,
-                                            precision: 0,
-                                            stepSize: 1,
-                                        },
-                                    },
-                                    x: {
-                                        stacked: true,
-                                        grid: {
-                                            display: false,
-                                        },
-                                        ticks: {
-                                            beginAtZero: true,
-                                            precision: 0,
-                                            stepSize: 1,
-                                        },
-                                    },
-                                },
-                                plugins: {
-                                    tooltip: {
-                                        mode: 'index',
-                                        intersect: false
-                                    },
-                                    legend: {
-                                        labels: {
-                                            usePointStyle: true,
-                                            boxWidth: 5,
-                                            boxHeight: 5,
-                                        },
-                                    },
-                                },
-                            }
-                        });
-                    }
-
-                    $('#filterSamplePerYearChart').change(function() {
-                        $.ajax({
-                            url: '{{ route('admin.dashboard.filter-chart-sample-per-year') }}',
-                            type: 'GET',
-                            data: {
-                                year: $(this).val()
-                            },
-                            success: function(response) {
-                                if (response.length > 0) {
-                                    console.log(response);
-                                    samplePerYear = response;
-                                    updateChart(samplePerYear);
-                                } else {
-                                    emptyChart();
-                                    //
-                                }
-                            }
-                        });
-                    });
-
-                    @if (count($samplePerYear) > 0)
-                        updateChart(samplePerYear);
-                    @endif
-                } else {
-                    console.error('Canvas element with ID "samplePerYear" not found.');
-                }
-            });
-        </script>
-
-        <script>
-            $(function() {
-                let sampleAndAbj = @json($sampleAndAbj);
-
-                @if (count($sampleAndAbj) > 0)
-                    let orangePalette = [
-                        '#f6c23e',
-                        '#e74a3b',
-                        '#9c27b0'
-                    ];
-
-                    // Extract data for labels, total_sample, and total_abj
-                    let districtNames = Object.values(sampleAndAbj).map(entry => entry.name);
-                    let totalSampleData = Object.values(sampleAndAbj).map(entry => entry.total_sample);
-                    let totalAbjData = Object.values(sampleAndAbj).map(entry => entry.total_abj);
-                    let totalLarvaData = Object.values(sampleAndAbj).map(entry => entry.total_larva);
-
-                    var ctx = document.getElementById('sampleAndAbj').getContext('2d');
-                    // width 100%
-                    ctx.canvas.width = '100%';
-
-                    var myChart = new Chart(ctx, {
-                        type: 'bar',
-                        data: {
-                            labels: districtNames,
-                            datasets: [{
-                                    label: 'Total Sampel',
-                                    data: totalSampleData,
-                                    backgroundColor: orangePalette[0],
-                                    borderColor: orangePalette[0],
-                                    borderWidth: 1,
-                                    borderRadius: 4,
-                                    barPercentage: 0.5,
-                                    categoryPercentage: 0.5,
-                                },
-                                {
-                                    label: 'Total ABJ',
-                                    data: totalAbjData,
-                                    backgroundColor: orangePalette[1],
-                                    borderColor: orangePalette[1],
-                                    borderWidth: 1,
-                                    borderRadius: 4,
-                                    barPercentage: 0.5,
-                                    categoryPercentage: 0.5,
-                                },
-                                {
-                                    label: 'Total Larva',
-                                    data: totalLarvaData,
-                                    backgroundColor: orangePalette[2],
-                                    borderColor: orangePalette[2],
-                                    borderWidth: 1,
-                                    borderRadius: 4,
-                                    barPercentage: 0.5,
-                                    categoryPercentage: 0.5,
-                                },
-                            ],
-                        },
-                        options: {
-                            responsive: true,
-                            interaction: {
-                                mode: 'index',
-                                intersect: false,
-                            },
-                            scales: {
-                                y: {
-                                    grid: {
-                                        display: false,
-                                    },
-                                    ticks: {
-                                        beginAtZero: true,
-                                        precision: 0,
-                                        stepSize: 1,
-                                    },
-                                },
-                                x: {
-                                    grid: {
-                                        display: false,
-                                    },
-                                    ticks: {
-                                        beginAtZero: true,
-                                        precision: 0,
-                                        stepSize: 1,
-                                    },
-                                },
-                            },
-                            options: {
-                                // ... (other options)
-                                plugins: {
-                                    tooltip: {
-                                        mode: 'index',
-                                        intersect: false,
-                                        callbacks: {
-                                            label: function(context) {
-                                                var datasetLabel = context.dataset.label || '';
-                                                var value = context.parsed.y;
-                                                var total = context.dataset.data.reduce(function(
-                                                    previousValue, currentValue) {
-                                                    return previousValue + currentValue;
-                                                });
-                                                var percentage = ((value / total) * 100).toFixed(2) + '%';
-                                                return datasetLabel + ': ' + percentage;
-                                            }
-                                        }
-                                    },
-                                    legend: {
-                                        display: true, // Set to true to display the legend
-                                        position: 'top', // Change the legend position (e.g., 'top', 'bottom', 'left', 'right')
-                                        labels: {
-                                            usePointStyle: true,
-                                            boxWidth: 5,
-                                            boxHeight: 5,
-                                            fontColor: 'black', // Change the font color of the legend labels
-                                        },
-                                    },
-                                    // ... (other plugins)
-                                },
-                            }
-                        },
-                    });
-                @endif
-
-                $('#regency').change(function() {
-                    let regencyId = $(this).val();
-                    $.ajax({
-                        url: '{{ route('admin.dashboard.get-sample-and-abj-by-district') }}',
-                        type: 'POST',
-                        data: {
-                            _token: '{{ csrf_token() }}',
-                            regency_id: regencyId
-                        },
-                        success: function(response) {
-                            let sampleAndAbj = response;
-
-                            // Extract data for labels, total_sample, and total_abj
-                            let districtNames = Object.values(sampleAndAbj).map(entry => entry
-                                .name);
-                            let totalSampleData = Object.values(sampleAndAbj).map(entry => entry
-                                .total_sample);
-                            let totalAbjData = Object.values(sampleAndAbj).map(entry => entry
-                                .total_abj);
-                            let totalLarvaData = Object.values(sampleAndAbj).map(entry => entry
-                                .total_larva);
-
-                            myChart.data.labels = districtNames;
-                            myChart.data.datasets[0].data = totalSampleData;
-                            myChart.data.datasets[1].data = totalAbjData;
-                            myChart.data.datasets[2].data = totalLarvaData;
-                            myChart.update();
-                        }
-                    });
-                });
-
-                // set height when canvas already rendered
-                $('#sampleAbjCard').height($('#sampleAndAbj').height() + 100);
-            });
-        </script>
     @endpush
-</x-app-layout>
+</x-user-layout>
